@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="wing.tree.world.capitals.quiz.view.fragment.HomeFragment"
+        android:label="HomeFragment" >
+
+        <action
+            android:id="@+id/action_homeFragment_to_worldCapitalsFragment"
+            app:destination="@id/worldCapitalsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_quizFragment"
+            app:destination="@id/quizFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="wing.tree.world.capitals.quiz.view.fragment.QuizFragment"
+        android:label="QuizFragment" >
+        <argument
+            android:name="difficulty"
+            app:argType="wing.tree.world.capitals.quiz.data.model.Difficulty" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/worldCapitalsFragment"
+        android:name="wing.tree.world.capitals.quiz.view.fragment.WorldCapitalsFragment"
+        android:label="WorldCapitalsFragment" />
+
+</navigation>

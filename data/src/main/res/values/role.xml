@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="administrative">Administrative</string>
+    <string name="commercial">Commercial</string>
+    <string name="claimed">Claimed</string>
+    <string name="de_facto">De facto</string>
+    <string name="judicial">Judicial</string>
+    <string name="legislative">Legislative</string>
+    <string name="official">Official</string>
+</resources>

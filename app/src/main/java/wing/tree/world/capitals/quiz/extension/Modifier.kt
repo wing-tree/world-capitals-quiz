@@ -1,0 +1,52 @@
+package wing.tree.world.capitals.quiz.extension
+
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import wing.tree.world.capitals.quiz.data.constant.ZERO
+import wing.tree.world.capitals.quiz.data.constant.ZERO_ANGLE
+import wing.tree.world.capitals.quiz.data.extension.float
+import wing.tree.world.capitals.quiz.data.extension.half
+import wing.tree.world.capitals.quiz.data.extension.radians
+import wing.tree.world.capitals.quiz.data.extension.square
+import wing.tree.world.capitals.quiz.ui.theme.CloudWhite
+import wing.tree.world.capitals.quiz.ui.theme.SkyBlue
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.sin
+import kotlin.math.sqrt
+
+fun Modifier.linearGradient(
+    colors: ImmutableList<Color> = persistentListOf(SkyBlue, CloudWhite),
+    angle: Float = ZERO_ANGLE,
+) = then(
+    Modifier.drawBehind {
+        val width = size.width
+        val height = size.height
+
+        val angleRad = angle.radians
+        val x = cos(angleRad).float
+        val y = sin(angleRad).float
+
+        val radius = sqrt(width.square().plus(height.square())).half
+        val offset = center + Offset(x.times(radius), y.times(radius))
+
+        val exactOffset = Offset(
+            x = min(offset.x.coerceAtLeast(ZERO.float), width),
+            y = height.minus(min(offset.y.coerceAtLeast(ZERO.float), height))
+        )
+
+        drawRect(
+            brush = Brush.linearGradient(
+                colors = colors,
+                start = Offset(width, height).minus(exactOffset),
+                end = exactOffset
+            ),
+            size = size,
+        )
+    }
+)

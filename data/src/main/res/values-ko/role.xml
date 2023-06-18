@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="administrative">행정</string>
+    <string name="commercial">상업</string>
+    <string name="claimed">주장</string>
+    <string name="de_facto">사실상</string>
+    <string name="judicial">사법</string>
+    <string name="legislative">입법</string>
+    <string name="official">공식</string>
+</resources>
