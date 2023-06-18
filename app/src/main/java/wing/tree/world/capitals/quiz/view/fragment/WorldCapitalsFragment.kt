@@ -34,6 +34,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -409,12 +410,21 @@ private fun Nation(
         mutableStateOf(starred)
     }
 
+    val containerColor by animateColorAsState(
+        targetValue = if (starredState) {
+            colorScheme.primaryContainer
+        } else {
+            colorScheme.surface
+        }
+    )
+
     Box(modifier = modifier) {
         ElevatedCard(
             onClick = {
                 starredState = starredState.not()
                 onClick(nation.key)
             },
+            colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
         ) {
             Row(
                 modifier = Modifier
