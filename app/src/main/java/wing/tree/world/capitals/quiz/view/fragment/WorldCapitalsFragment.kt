@@ -434,12 +434,16 @@ private fun Nation(
             ) {
                 Text(
                     text = stringResource(id = nation.country),
-                    modifier = Modifier.weight(ONE.float),
+                    modifier = Modifier
+                        .weight(ONE.float)
+                        .padding(horizontal = 16.dp),
                     textAlign = TextAlign.Center,
                 )
 
                 Column(
-                    modifier = Modifier.weight(ONE.float),
+                    modifier = Modifier
+                        .weight(ONE.float)
+                        .padding(horizontal = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     nation.capitals.forEach { capital ->
