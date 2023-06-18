@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -179,11 +180,13 @@ private fun Content(
                             showOnlyStarred = showOnlyStarred.not()
                         },
                     ) {
-                        val tint = if (showOnlyStarred) {
+                        val targetValue = if (showOnlyStarred) {
                             colorScheme.primary
                         } else {
                             colorScheme.onSurfaceVariant
                         }
+
+                        val tint by animateColorAsState(targetValue = targetValue)
 
                         Icon(
                             imageVector = Icons.Rounded.Star,
@@ -464,6 +467,7 @@ private fun Nation(
                 imageVector = Icons.Rounded.Star,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
+                tint = colorScheme.primary,
             )
         }
     }
