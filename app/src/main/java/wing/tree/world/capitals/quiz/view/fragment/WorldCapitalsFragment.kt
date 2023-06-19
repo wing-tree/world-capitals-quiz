@@ -164,7 +164,34 @@ private fun Content(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Title(lazyListState = lazyListState)
+                    AnimatedContent(
+                        targetState = showOnlyStarred,
+                        transitionSpec = {
+                            if (targetState) {
+                                slideInHorizontally {
+                                    it.half
+                                }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                                    it.half.unaryMinus()
+                                }.plus(fadeOut())
+                            } else {
+                                slideInHorizontally {
+                                    it.half.unaryMinus()
+                                }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                                    it.half
+                                }.plus(fadeOut())
+                            }
+                        }
+                    ) {
+                        if (it) {
+                            Text(
+                                text = stringResource(id = R.string.starred),
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center,
+                            )
+                        } else {
+                            Title(lazyListState = lazyListState)
+                        }
+                    }
                 },
                 navigationIcon = {
                     IconButton(
