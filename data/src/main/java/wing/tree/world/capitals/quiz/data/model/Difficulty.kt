@@ -5,7 +5,7 @@ import wing.tree.world.capitals.quiz.data.constant.TEN
 import wing.tree.world.capitals.quiz.data.constant.THIRTY
 
 enum class Difficulty(val count: Int) {
-    EASY(2),
+    EASY(TEN),
     MEDIUM(THIRTY),
     HARD(FIFTY);
 }
