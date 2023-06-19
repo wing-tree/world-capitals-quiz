@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,6 +46,7 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -288,11 +290,7 @@ private fun InProgress(
                 }
             }
 
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 24.dp),
-            ) {
+            Surface(modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = {
                         if (round < count.dec()) {
@@ -301,9 +299,13 @@ private fun InProgress(
                             onClick(Action.Complete)
                         }
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 24.dp),
                     enabled = answered,
-                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
+                    shape = ShapeDefaults.Medium,
+                    elevation = ButtonDefaults.elevatedButtonElevation(),
+                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                 ) {
                     Text(
                         text = stringResource(id = R.string.next),
@@ -526,22 +528,23 @@ private fun Summary(
                 }
             }
 
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 24.dp),
-            ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Surface(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
                     Button(
                         onClick = {
                             onClick(Action.Home)
                         },
                         modifier = Modifier.weight(ONE.float),
+                        shape = ShapeDefaults.Medium,
+                        elevation = ButtonDefaults.elevatedButtonElevation(),
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.home),
-                            style = typography.titleMedium,
+                            style = typography.titleLarge,
                         )
                     }
 
@@ -550,11 +553,13 @@ private fun Summary(
                             onClick(Action.Replay)
                         },
                         modifier = Modifier.weight(ONE.float),
+                        shape = ShapeDefaults.Medium,
+                        elevation = ButtonDefaults.elevatedButtonElevation(),
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.replay),
-                            style = typography.titleMedium,
+                            style = typography.titleLarge,
                         )
                     }
                 }

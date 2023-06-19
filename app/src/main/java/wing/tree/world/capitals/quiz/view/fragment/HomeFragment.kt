@@ -1,10 +1,12 @@
 package wing.tree.world.capitals.quiz.view.fragment
 
+import android.media.FaceDetector.Face
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -29,11 +31,15 @@ import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -65,6 +71,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -82,6 +89,9 @@ import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.shareApp
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
+import wing.tree.world.capitals.quiz.ui.theme.CoolMint
+import wing.tree.world.capitals.quiz.ui.theme.FacebookBlue
+import wing.tree.world.capitals.quiz.ui.theme.SpanishSkyBlue
 import wing.tree.world.capitals.quiz.ui.theme.WorldCapitalsQuizTheme
 import wing.tree.world.capitals.quiz.view.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToQuizFragment
 
@@ -115,7 +125,7 @@ class HomeFragment : BaseFragment() {
                     modifier = Modifier
                         .width(IntrinsicSize.Max)
                         .clip(DrawerDefaults.shape)
-                        .gradient(),
+                        .gradient(persistentListOf(CoolMint, Color.White)),
                 )
             },
             drawerState = drawerState,
@@ -188,36 +198,53 @@ class HomeFragment : BaseFragment() {
 
                     Column(
                         modifier = Modifier.width(IntrinsicSize.Max),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        Button(
+                        ElevatedCard(
                             onClick = {
                                 val directions = HomeFragmentDirections
                                     .actionHomeFragmentToWorldCapitalsFragment()
 
                                 navigate(directions)
                             },
-                            elevation = ButtonDefaults.elevatedButtonElevation(),
-                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                         ) {
-                            Text(
-                                text = stringResource(id = R.string.world_capitals),
-                                style = typography.titleLarge,
-                            )
+                            Box(modifier = Modifier
+                                .gradient(
+                                    persistentListOf(SpanishSkyBlue, FacebookBlue),
+                                    90f,
+                                )
+                                .padding(horizontal = 24.dp, vertical = 12.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.world_capitals),
+                                    color = colorScheme.onPrimary,
+                                    style = typography.titleLarge,
+                                )
+                            }
                         }
 
-                        Button(
+                        ElevatedCard(
                             onClick = {
                                 openDialog.value = true
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            elevation = ButtonDefaults.elevatedButtonElevation(),
-                            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
                         ) {
-                            Text(
-                                text = stringResource(id = R.string.quiz),
-                                style = typography.titleLarge,
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .gradient(
+                                        persistentListOf(FacebookBlue, SpanishSkyBlue),
+                                        90f.unaryMinus()
+                                    )
+                                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.quiz),
+                                    color = colorScheme.onPrimary,
+                                    style = typography.titleLarge,
+                                )
+                            }
                         }
                     }
 
@@ -312,7 +339,7 @@ class HomeFragment : BaseFragment() {
                 ) {
                     Column(
                         modifier = Modifier
-                            .gradient()
+                            .gradient(persistentListOf(CoolMint, Color.White))
                             .padding(12.dp),
                     ) {
                         Difficulty.values().forEach { difficulty ->
