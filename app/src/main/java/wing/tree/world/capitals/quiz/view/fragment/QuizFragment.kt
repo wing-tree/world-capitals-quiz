@@ -305,7 +305,7 @@ private fun InProgress(
                     enabled = answered,
                     shape = ShapeDefaults.Medium,
                     elevation = ButtonDefaults.elevatedButtonElevation(),
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                 ) {
                     Text(
                         text = stringResource(id = R.string.next),
@@ -540,7 +540,7 @@ private fun Summary(
                         modifier = Modifier.weight(ONE.float),
                         shape = ShapeDefaults.Medium,
                         elevation = ButtonDefaults.elevatedButtonElevation(),
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.home),
@@ -555,7 +555,7 @@ private fun Summary(
                         modifier = Modifier.weight(ONE.float),
                         shape = ShapeDefaults.Medium,
                         elevation = ButtonDefaults.elevatedButtonElevation(),
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.replay),

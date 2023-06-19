@@ -17,6 +17,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -304,11 +305,7 @@ private fun Content(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 4.dp,
-                ),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             Text(
                 text = stringResource(id = R.string.country),
@@ -372,7 +369,7 @@ private fun WorldCapitals(
     LazyColumn(
         modifier = modifier,
         state = lazyListState,
-        contentPadding = PaddingValues(horizontal = 16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     ) {
         listOf(America, Asia, Europe, Oceania, Africa).forEach {
             worldCapitals(
@@ -397,7 +394,7 @@ private fun Starred(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     ) {
         listOf(America, Asia, Europe, Oceania, Africa).forEach {
             worldCapitals(
@@ -420,7 +417,7 @@ private fun Continent(
         color = colorScheme.onSurfaceVariant,
         modifier = modifier.padding(
             horizontal = 16.dp,
-            vertical = 12.dp,
+            vertical = 8.dp,
         ),
     )
 }
@@ -471,22 +468,26 @@ private fun Nation(
                     modifier = Modifier
                         .weight(ONE.float)
                         .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     nation.capitals.forEach { capital ->
-                        Text(
-                            text = stringResource(id = capital.capital),
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                        )
-
-                        capital.role?.let {
+                        Column {
                             Text(
-                                text = stringResource(id = it.role),
+                                text = stringResource(id = capital.capital),
                                 modifier = Modifier.fillMaxWidth(),
                                 textAlign = TextAlign.Center,
-                                style = typography.labelSmall,
                             )
+
+                            capital.role?.let {
+                                Text(
+                                    text = stringResource(id = it.role),
+                                    modifier = Modifier.fillMaxWidth(),
+                                    color = colorScheme.onSurfaceVariant,
+                                    textAlign = TextAlign.Center,
+                                    style = typography.labelSmall,
+                                )
+                            }
                         }
                     }
                 }
@@ -578,10 +579,6 @@ private fun LazyListScope.worldCapitals(
                     VerticalSpacer(height = 8.dp)
                 }
             }
-        }
-
-        item {
-            VerticalSpacer(height = 8.dp)
         }
     }
 }
