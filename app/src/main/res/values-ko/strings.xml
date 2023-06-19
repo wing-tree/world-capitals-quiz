@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="africa">아프리카</string>
+    <string name="america">아메리카</string>
+    <string name="app_name">세계 수도 퀴즈</string>
+    <string name="asia">아시아</string>
+    <string name="capital">수도</string>
+    <string name="country">나라</string>
+    <string name="easy">쉬움</string>
+    <string name="europe">유럽</string>
+    <string name="format">%s의 수도는?</string>
+    <string name="hard">어려움</string>
+    <string name="home">홈</string>
+    <string name="leave_a_review">리뷰쓰기</string>
+    <string name="medium">보통</string>
+    <string name="next">다음</string>
+    <string name="oceania">오세아니아</string>
+    <string name="press_the_back_button_once_more_to_exit">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="quiz">퀴즈</string>
+    <string name="replay">다시하기</string>
+    <string name="share_the_app">앱 공유하기</string>
+    <string name="starred">별표 표시</string>
+    <string name="thank_you_for_your_valuable_review">소중한 리뷰 감사합니다.</string>
+    <string name="world_capitals">세계 수도</string>
+</resources>

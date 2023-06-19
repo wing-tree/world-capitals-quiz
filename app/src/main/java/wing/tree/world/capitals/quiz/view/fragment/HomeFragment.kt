@@ -174,6 +174,7 @@ class HomeFragment : BaseFragment() {
                     Text(
                         text = stringResource(id = R.string.app_name),
                         modifier = Modifier.padding(vertical = 24.dp),
+                        textAlign = TextAlign.Center,
                         style = typography.displayMedium,
                     )
 
