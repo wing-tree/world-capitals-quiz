@@ -202,12 +202,13 @@ class HomeFragment : BaseFragment() {
                                 navigate(directions)
                             },
                         ) {
-                            Box(modifier = Modifier
-                                .gradient(
-                                    persistentListOf(SpanishSkyBlue, FacebookBlue),
-                                    90f,
-                                )
-                                .padding(horizontal = 24.dp, vertical = 12.dp)
+                            Box(
+                                modifier = Modifier
+                                    .gradient(
+                                        persistentListOf(SpanishSkyBlue, FacebookBlue),
+                                        90f,
+                                    ).padding(horizontal = 24.dp, vertical = 12.dp),
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
                                     text = stringResource(id = R.string.world_capitals),

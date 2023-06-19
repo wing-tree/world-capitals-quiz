@@ -34,6 +34,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -67,6 +68,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.navArgs
+import kotlinx.collections.immutable.persistentListOf
 import wing.tree.world.capitals.quiz.InterstitialAdLoader
 import wing.tree.world.capitals.quiz.R
 import wing.tree.world.capitals.quiz.data.constant.ONE
@@ -76,13 +78,17 @@ import wing.tree.world.capitals.quiz.data.constant.ZERO
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.extension.`is`
 import wing.tree.world.capitals.quiz.data.extension.isNotNull
+import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.model.Question
 import wing.tree.world.capitals.quiz.ui.compose.DoubleBackHandler
 import wing.tree.world.capitals.quiz.ui.compose.HorizontalSpacer
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState.Action
+import wing.tree.world.capitals.quiz.ui.theme.FacebookBlue
 import wing.tree.world.capitals.quiz.ui.theme.RedditRed
+import wing.tree.world.capitals.quiz.ui.theme.SkyBlue
+import wing.tree.world.capitals.quiz.ui.theme.SpanishSkyBlue
 import wing.tree.world.capitals.quiz.ui.theme.WhatsAppLightGreen
 import wing.tree.world.capitals.quiz.ui.theme.WorldCapitalsQuizTheme
 import wing.tree.world.capitals.quiz.viewmodel.QuizViewModel
@@ -304,7 +310,6 @@ private fun InProgress(
                         .padding(horizontal = 16.dp, vertical = 24.dp),
                     enabled = answered,
                     shape = ShapeDefaults.Medium,
-                    elevation = ButtonDefaults.elevatedButtonElevation(),
                     contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                 ) {
                     Text(
@@ -533,34 +538,50 @@ private fun Summary(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Button(
+                    ElevatedCard(
                         onClick = {
                             onClick(Action.Home)
                         },
                         modifier = Modifier.weight(ONE.float),
-                        shape = ShapeDefaults.Medium,
-                        elevation = ButtonDefaults.elevatedButtonElevation(),
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.home),
-                            style = typography.titleLarge,
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .gradient(
+                                    persistentListOf(SkyBlue, SpanishSkyBlue),
+                                    90f,
+                                ).padding(horizontal = 24.dp, vertical = 12.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.home),
+                                color = colorScheme.onPrimary,
+                                style = typography.titleLarge,
+                            )
+                        }
                     }
 
-                    Button(
+                    ElevatedCard(
                         onClick = {
                             onClick(Action.Replay)
                         },
                         modifier = Modifier.weight(ONE.float),
-                        shape = ShapeDefaults.Medium,
-                        elevation = ButtonDefaults.elevatedButtonElevation(),
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.replay),
-                            style = typography.titleLarge,
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .gradient(
+                                    persistentListOf(SkyBlue, SpanishSkyBlue),
+                                    90f,
+                                ).padding(horizontal = 24.dp, vertical = 12.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.replay),
+                                color = colorScheme.onPrimary,
+                                style = typography.titleLarge,
+                            )
+                        }
                     }
                 }
             }
