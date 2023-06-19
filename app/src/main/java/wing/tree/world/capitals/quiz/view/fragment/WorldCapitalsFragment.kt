@@ -45,6 +45,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -163,68 +164,92 @@ private fun Content(
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    AnimatedContent(
-                        targetState = showOnlyStarred,
-                        transitionSpec = {
-                            if (targetState) {
-                                slideInHorizontally {
-                                    it.half
-                                }.plus(fadeIn()) togetherWith slideOutHorizontally {
-                                    it.half.unaryMinus()
-                                }.plus(fadeOut())
-                            } else {
-                                slideInHorizontally {
-                                    it.half.unaryMinus()
-                                }.plus(fadeIn()) togetherWith slideOutHorizontally {
-                                    it.half
-                                }.plus(fadeOut())
+            Surface(shadowElevation = 4.dp) {
+                Column {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            AnimatedContent(
+                                targetState = showOnlyStarred,
+                                transitionSpec = {
+                                    if (targetState) {
+                                        slideInHorizontally {
+                                            it.half
+                                        }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                                            it.half.unaryMinus()
+                                        }.plus(fadeOut())
+                                    } else {
+                                        slideInHorizontally {
+                                            it.half.unaryMinus()
+                                        }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                                            it.half
+                                        }.plus(fadeOut())
+                                    }
+                                }
+                            ) {
+                                if (it) {
+                                    Text(
+                                        text = stringResource(id = R.string.starred),
+                                        modifier = Modifier.fillMaxWidth(),
+                                        textAlign = TextAlign.Center,
+                                    )
+                                } else {
+                                    Title(lazyListState = lazyListState)
+                                }
+                            }
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    navController.popBackStack()
+                                },
+                            ) {
+                                Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                            }
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = {
+                                    showOnlyStarred = showOnlyStarred.not()
+                                },
+                            ) {
+                                val targetValue = if (showOnlyStarred) {
+                                    colorScheme.primary
+                                } else {
+                                    colorScheme.onSurfaceVariant
+                                }
+
+                                val tint by animateColorAsState(targetValue = targetValue)
+
+                                Icon(
+                                    imageVector = Icons.Rounded.Star,
+                                    contentDescription = null,
+                                    tint = tint,
+                                )
                             }
                         }
-                    ) {
-                        if (it) {
-                            Text(
-                                text = stringResource(id = R.string.starred),
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                            )
-                        } else {
-                            Title(lazyListState = lazyListState)
-                        }
-                    }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        },
-                    ) {
-                        Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            showOnlyStarred = showOnlyStarred.not()
-                        },
-                    ) {
-                        val targetValue = if (showOnlyStarred) {
-                            colorScheme.primary
-                        } else {
-                            colorScheme.onSurfaceVariant
-                        }
+                    )
 
-                        val tint by animateColorAsState(targetValue = targetValue)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.country),
+                            modifier = Modifier.weight(ONE.float),
+                            color = colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                        )
 
-                        Icon(
-                            imageVector = Icons.Rounded.Star,
-                            contentDescription = null,
-                            tint = tint,
+                        Text(
+                            text = stringResource(id = R.string.capital),
+                            modifier = Modifier.weight(ONE.float),
+                            color = colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
                         )
                     }
                 }
-            )
+            }
         }
     ) { paddingValues ->
         Content(
@@ -301,60 +326,38 @@ private fun Content(
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-        ) {
-            Text(
-                text = stringResource(id = R.string.country),
-                modifier = Modifier.weight(ONE.float),
-                color = colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-
-            Text(
-                text = stringResource(id = R.string.capital),
-                modifier = Modifier.weight(ONE.float),
-                color = colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-        }
-
-        AnimatedContent(
-            targetState = showOnlyStarred,
-            modifier = Modifier.weight(ONE.float),
-            transitionSpec = {
-                if (targetState) {
-                    slideInHorizontally {
-                        it.half
-                    }.plus(fadeIn()) togetherWith slideOutHorizontally {
-                        it.half.unaryMinus()
-                    }.plus(fadeOut())
-                } else {
-                    slideInHorizontally {
-                        it.half.unaryMinus()
-                    }.plus(fadeIn()) togetherWith slideOutHorizontally {
-                        it.half
-                    }.plus(fadeOut())
-                }
-            },
-        ) { targetState ->
+    AnimatedContent(
+        targetState = showOnlyStarred,
+        modifier = modifier,
+        transitionSpec = {
             if (targetState) {
-                Starred(
-                    starred = starred,
-                    onItemClick = onItemClick,
-                    modifier = Modifier.fillMaxSize(),
-                )
+                slideInHorizontally {
+                    it.half
+                }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                    it.half.unaryMinus()
+                }.plus(fadeOut())
             } else {
-                WorldCapitals(
-                    starred = starred,
-                    lazyListState = lazyListState,
-                    onItemClick = onItemClick,
-                    modifier = Modifier.fillMaxSize(),
-                )
+                slideInHorizontally {
+                    it.half.unaryMinus()
+                }.plus(fadeIn()) togetherWith slideOutHorizontally {
+                    it.half
+                }.plus(fadeOut())
             }
+        },
+    ) { targetState ->
+        if (targetState) {
+            Starred(
+                starred = starred,
+                onItemClick = onItemClick,
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
+            WorldCapitals(
+                starred = starred,
+                lazyListState = lazyListState,
+                onItemClick = onItemClick,
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }

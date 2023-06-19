@@ -30,11 +30,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -82,10 +80,10 @@ import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.model.Question
 import wing.tree.world.capitals.quiz.ui.compose.DoubleBackHandler
 import wing.tree.world.capitals.quiz.ui.compose.HorizontalSpacer
+import wing.tree.world.capitals.quiz.ui.compose.NumberText
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState.Action
-import wing.tree.world.capitals.quiz.ui.theme.FacebookBlue
 import wing.tree.world.capitals.quiz.ui.theme.RedditRed
 import wing.tree.world.capitals.quiz.ui.theme.SkyBlue
 import wing.tree.world.capitals.quiz.ui.theme.SpanishSkyBlue
@@ -226,7 +224,11 @@ private fun InProgress(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text(text = "${round.inc()} $SLASH $count")
+                        Row {
+                            NumberText(number = round.inc(), digits = TWO)
+                            Text(text = " $SLASH ")
+                            NumberText(number = count, digits = TWO)
+                        }
                     }
                 },
                 navigationIcon = {
@@ -296,7 +298,7 @@ private fun InProgress(
                 }
             }
 
-            Surface(modifier = Modifier.fillMaxWidth()) {
+            Surface(modifier = Modifier.fillMaxWidth(), shadowElevation = 4.dp) {
                 Button(
                     onClick = {
                         if (round < count.dec()) {
@@ -449,35 +451,35 @@ private fun Summary(
     Scaffold(
         modifier = modifier,
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    val count = summary.questions.count()
-                    val score = summary.questions.count {
-                        it.answer.value == it.correctAnswer
-                    }
+            Surface(shadowElevation = 4.dp) {
+                CenterAlignedTopAppBar(
+                    title = {
+                        val count = summary.questions.count()
+                        val score = summary.questions.count {
+                            it.answer.value == it.correctAnswer
+                        }
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(text = "$score $SLASH $count")
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(text = "$score $SLASH $count")
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                onClick(Action.DoubleBack(summary))
+                            },
+                        ) {
+                            Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                        }
                     }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            onClick(Action.DoubleBack(summary))
-                        },
-                    ) {
-                        Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
-                    }
-                }
-            )
+                )
+            }
         },
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            VerticalSpacer(height = 24.dp)
-            
             LazyColumn(
                 modifier = Modifier.weight(ONE.float),
                 contentPadding = PaddingValues(16.dp),
@@ -533,7 +535,7 @@ private fun Summary(
                 }
             }
 
-            Surface(modifier = Modifier.fillMaxWidth()) {
+            Surface(modifier = Modifier.fillMaxWidth(), shadowElevation = 4.dp) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -550,7 +552,8 @@ private fun Summary(
                                 .gradient(
                                     persistentListOf(SkyBlue, SpanishSkyBlue),
                                     90f,
-                                ).padding(horizontal = 24.dp, vertical = 12.dp),
+                                )
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -573,7 +576,8 @@ private fun Summary(
                                 .gradient(
                                     persistentListOf(SkyBlue, SpanishSkyBlue),
                                     90f,
-                                ).padding(horizontal = 24.dp, vertical = 12.dp),
+                                )
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
