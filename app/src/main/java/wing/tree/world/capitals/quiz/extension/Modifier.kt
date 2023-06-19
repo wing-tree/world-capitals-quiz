@@ -20,7 +20,7 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-fun Modifier.linearGradient(
+fun Modifier.gradient(
     colors: ImmutableList<Color> = persistentListOf(SkyBlue, CloudWhite),
     angle: Float = ZERO_ANGLE,
 ) = then(

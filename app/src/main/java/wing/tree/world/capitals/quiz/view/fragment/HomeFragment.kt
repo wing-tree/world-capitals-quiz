@@ -78,7 +78,7 @@ import wing.tree.world.capitals.quiz.data.constant.ZERO_ANGLE
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.model.Difficulty
 import wing.tree.world.capitals.quiz.extension.actionBarSize
-import wing.tree.world.capitals.quiz.extension.linearGradient
+import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.shareApp
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
@@ -115,7 +115,7 @@ class HomeFragment : BaseFragment() {
                     modifier = Modifier
                         .width(IntrinsicSize.Max)
                         .clip(DrawerDefaults.shape)
-                        .linearGradient(),
+                        .gradient(),
                 )
             },
             drawerState = drawerState,
@@ -126,7 +126,7 @@ class HomeFragment : BaseFragment() {
             }
 
             Scaffold(
-                modifier = modifier.linearGradient(),
+                modifier = modifier.gradient(),
                 topBar = {
                     TopAppBar(
                         title = {
@@ -312,7 +312,7 @@ class HomeFragment : BaseFragment() {
                 ) {
                     Column(
                         modifier = Modifier
-                            .linearGradient()
+                            .gradient()
                             .padding(12.dp),
                     ) {
                         Difficulty.values().forEach { difficulty ->
