@@ -85,6 +85,7 @@ import wing.tree.world.capitals.quiz.extension.actionBarSize
 import wing.tree.world.capitals.quiz.extension.bounceVertically
 import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.shareApp
+import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.theme.CoolMint
@@ -220,7 +221,8 @@ class HomeFragment : BaseFragment() {
                                     .gradient(
                                         persistentListOf(SpanishSkyBlue, FacebookBlue),
                                         RIGHT_ANGLE,
-                                    ).padding(horizontal = 24.dp, vertical = 12.dp),
+                                    )
+                                    .padding(horizontal = 24.dp, vertical = 12.dp),
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
@@ -300,10 +302,7 @@ class HomeFragment : BaseFragment() {
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 icon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.round_rate_review_24),
-                        contentDescription = null,
-                    )
+                    Icon(painter = painterResource(id = R.drawable.round_rate_review_24))
                 },
                 colors = colors,
             )
@@ -318,10 +317,7 @@ class HomeFragment : BaseFragment() {
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 icon = {
-                    Icon(
-                        imageVector = Icons.Rounded.Share,
-                        contentDescription = null,
-                    )
+                    Icon(imageVector = Icons.Rounded.Share)
                 },
                 colors = colors,
             )

@@ -86,6 +86,7 @@ import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.model.Question
 import wing.tree.world.capitals.quiz.ui.compose.DoubleBackHandler
 import wing.tree.world.capitals.quiz.ui.compose.HorizontalSpacer
+import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.NumberText
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
@@ -127,9 +128,11 @@ class QuizFragment : BaseFragment() {
                             lifecycleScope.launch {
                                 if (adFreeChecker.check(requireContext()).not()) {
                                     when (action) {
-                                        Action.Home, Action.Replay -> interstitialAdLoader.show(requireActivity())
+                                        Action.Home, Action.Replay -> interstitialAdLoader.show(
+                                            requireActivity()
+                                        )
 
-                                        is Action.DoubleBack ->  if (action.uiState.isSummary()) {
+                                        is Action.DoubleBack -> if (action.uiState.isSummary()) {
                                             interstitialAdLoader.show(requireActivity())
                                         }
 
@@ -249,7 +252,7 @@ private fun InProgress(
                             onClick(Action.DoubleBack(inProgress))
                         },
                     ) {
-                        Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                        Icon(imageVector = Icons.Rounded.ArrowBack)
                     }
                 }
             )
@@ -294,7 +297,7 @@ private fun InProgress(
                     slideIntoContainer(
                         towards = towards,
                         animationSpec = tween()
-                    ) togetherWith  slideOutOfContainer(
+                    ) togetherWith slideOutOfContainer(
                         towards = towards,
                         animationSpec = tween()
                     )
@@ -484,7 +487,7 @@ private fun Summary(
                                 onClick(Action.DoubleBack(summary))
                             },
                         ) {
-                            Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                            Icon(imageVector = Icons.Rounded.ArrowBack)
                         }
                     }
                 )

@@ -91,6 +91,7 @@ import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.extension.half
 import wing.tree.world.capitals.quiz.data.model.Continent
 import wing.tree.world.capitals.quiz.data.model.Nation
+import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.LocalNavController
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.WorldCapitalsUiState
@@ -205,7 +206,7 @@ private fun Content(
                                     navController.popBackStack()
                                 },
                             ) {
-                                Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
+                                Icon(imageVector = Icons.Rounded.ArrowBack)
                             }
                         },
                         actions = {
@@ -224,7 +225,6 @@ private fun Content(
 
                                 Icon(
                                     imageVector = Icons.Rounded.Star,
-                                    contentDescription = null,
                                     tint = tint,
                                 )
                             }
@@ -512,7 +512,6 @@ private fun Nation(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Star,
-                contentDescription = null,
                 modifier = Modifier.size(StarSize),
                 tint = colorScheme.primary,
             )
