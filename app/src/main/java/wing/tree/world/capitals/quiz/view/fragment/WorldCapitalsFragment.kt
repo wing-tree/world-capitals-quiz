@@ -76,6 +76,7 @@ import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ShadowElevation
 import wing.tree.world.capitals.quiz.constant.StarSize
 import wing.tree.world.capitals.quiz.data.constant.FOUR
+import wing.tree.world.capitals.quiz.data.constant.NOT_FOUND
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.constant.THREE
 import wing.tree.world.capitals.quiz.data.constant.TWO
@@ -396,17 +397,34 @@ private fun Starred(
         starred
     }
 
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-    ) {
-        listOf(America, Asia, Europe, Oceania, Africa).forEach {
-            worldCapitals(
-                worldCapitals = it,
-                showOnlyStarred = true,
-                starred = rememberStarred,
-                onItemClick = onItemClick,
+    if (rememberStarred.isNotEmpty()) {
+        LazyColumn(
+            modifier = modifier,
+            state = rememberLazyListState(),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            listOf(America, Asia, Europe, Oceania, Africa).forEach {
+                worldCapitals(
+                    worldCapitals = it,
+                    showOnlyStarred = true,
+                    starred = rememberStarred,
+                    onItemClick = onItemClick,
+                )
+            }
+        }
+    } else {
+        Column(
+            modifier = modifier.padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = NOT_FOUND,
+                style = typography.displayMedium,
             )
+            
+            VerticalSpacer(height = 16.dp)
+            Text(text = stringResource(id = R.string.there_are_no_starred_countries))
         }
     }
 }
