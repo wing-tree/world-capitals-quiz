@@ -7,9 +7,9 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -32,14 +32,13 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-@Composable
 fun Modifier.bounceVertically(
     targetValue: Float,
     animation: DurationBasedAnimationSpec<Float> = tween(
         durationMillis = SEVEN.hundreds,
         easing = FastOutLinearInEasing,
     ),
-): Modifier {
+): Modifier = composed {
     val value by rememberInfiniteTransition().animateFloat(
         initialValue = ZERO.float,
         targetValue = targetValue,
@@ -49,7 +48,7 @@ fun Modifier.bounceVertically(
         )
     )
 
-    return then(this).graphicsLayer {
+    then(this).graphicsLayer {
         translationY = value
     }
 }
