@@ -82,6 +82,7 @@ import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.extension.milliseconds
 import wing.tree.world.capitals.quiz.data.model.Difficulty
 import wing.tree.world.capitals.quiz.extension.actionBarSize
+import wing.tree.world.capitals.quiz.extension.bounceVertically
 import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.shareApp
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
@@ -179,7 +180,13 @@ class HomeFragment : BaseFragment() {
 
                     Text(
                         text = stringResource(id = R.string.app_name),
-                        modifier = Modifier.padding(vertical = 24.dp),
+                        modifier = Modifier
+                            .padding(vertical = 24.dp)
+                            .bounceVertically(
+                                targetValue = with(LocalDensity.current) {
+                                    4.dp.toPx()
+                                }
+                            ),
                         textAlign = TextAlign.Center,
                         style = typography.displayMedium,
                     )

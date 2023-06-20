@@ -1,16 +1,28 @@
 package wing.tree.world.capitals.quiz.extension
 
+import androidx.compose.animation.core.DurationBasedAnimationSpec
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import wing.tree.world.capitals.quiz.data.constant.SEVEN
 import wing.tree.world.capitals.quiz.data.constant.ZERO
 import wing.tree.world.capitals.quiz.data.constant.ZERO_ANGLE
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.extension.half
+import wing.tree.world.capitals.quiz.data.extension.hundreds
 import wing.tree.world.capitals.quiz.data.extension.radians
 import wing.tree.world.capitals.quiz.data.extension.square
 import wing.tree.world.capitals.quiz.ui.theme.CloudWhite
@@ -19,6 +31,28 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
+
+@Composable
+fun Modifier.bounceVertically(
+    targetValue: Float,
+    animation: DurationBasedAnimationSpec<Float> = tween(
+        durationMillis = SEVEN.hundreds,
+        easing = FastOutLinearInEasing,
+    ),
+): Modifier {
+    val value by rememberInfiniteTransition().animateFloat(
+        initialValue = ZERO.float,
+        targetValue = targetValue,
+        animationSpec = infiniteRepeatable(
+            animation = animation,
+            repeatMode = RepeatMode.Reverse,
+        )
+    )
+
+    return then(this).graphicsLayer {
+        translationY = value
+    }
+}
 
 fun Modifier.gradient(
     colors: ImmutableList<Color> = persistentListOf(SkyBlue, CloudWhite),
