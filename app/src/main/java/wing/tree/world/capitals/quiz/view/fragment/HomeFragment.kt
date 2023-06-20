@@ -17,11 +17,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
@@ -39,6 +37,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -73,9 +72,14 @@ import wing.tree.world.capitals.quiz.Review
 import wing.tree.world.capitals.quiz.data.constant.EMPTY
 import wing.tree.world.capitals.quiz.data.constant.FULL_ANGLE
 import wing.tree.world.capitals.quiz.data.constant.ONE
+import wing.tree.world.capitals.quiz.data.constant.ONE_HUNDRED
+import wing.tree.world.capitals.quiz.data.constant.QUARTER
+import wing.tree.world.capitals.quiz.data.constant.RIGHT_ANGLE
+import wing.tree.world.capitals.quiz.data.constant.THIRTY
 import wing.tree.world.capitals.quiz.data.constant.THREE_MINUTES_IN_MILLISECONDS
 import wing.tree.world.capitals.quiz.data.constant.ZERO_ANGLE
 import wing.tree.world.capitals.quiz.data.extension.float
+import wing.tree.world.capitals.quiz.data.extension.milliseconds
 import wing.tree.world.capitals.quiz.data.model.Difficulty
 import wing.tree.world.capitals.quiz.extension.actionBarSize
 import wing.tree.world.capitals.quiz.extension.gradient
@@ -160,7 +164,7 @@ class HomeFragment : BaseFragment() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     val infiniteTransition = rememberInfiniteTransition()
-                    val angle by infiniteTransition.animateFloat(
+                    val rotation by infiniteTransition.animateFloat(
                         initialValue = ZERO_ANGLE,
                         targetValue = FULL_ANGLE,
                         animationSpec = infiniteRepeatable(
@@ -170,6 +174,8 @@ class HomeFragment : BaseFragment() {
                             )
                         )
                     )
+
+                    val scale = ONE.plus(QUARTER)
 
                     Text(
                         text = stringResource(id = R.string.app_name),
@@ -184,9 +190,9 @@ class HomeFragment : BaseFragment() {
                         modifier = Modifier
                             .weight(ONE.float)
                             .graphicsLayer {
-                                scaleX = 1.25f
-                                scaleY = 1.25f
-                                rotationZ = angle
+                                scaleX = scale
+                                scaleY = scale
+                                rotationZ = rotation
                             },
                     )
 
@@ -206,7 +212,7 @@ class HomeFragment : BaseFragment() {
                                 modifier = Modifier
                                     .gradient(
                                         persistentListOf(SpanishSkyBlue, FacebookBlue),
-                                        90f,
+                                        RIGHT_ANGLE,
                                     ).padding(horizontal = 24.dp, vertical = 12.dp),
                                 contentAlignment = Alignment.Center,
                             ) {
@@ -228,8 +234,8 @@ class HomeFragment : BaseFragment() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .gradient(
-                                        persistentListOf(FacebookBlue, SpanishSkyBlue),
-                                        90f.unaryMinus()
+                                        persistentListOf(SpanishSkyBlue, FacebookBlue),
+                                        RIGHT_ANGLE
                                     )
                                     .padding(horizontal = 24.dp, vertical = 12.dp),
                                 contentAlignment = Alignment.Center,
@@ -330,7 +336,7 @@ class HomeFragment : BaseFragment() {
             ) {
                 Surface(
                     modifier = modifier.padding(28.dp),
-                    shape = RoundedCornerShape(28.dp)
+                    shape = ShapeDefaults.ExtraLarge,
                 ) {
                     Column(
                         modifier = Modifier
@@ -347,11 +353,12 @@ class HomeFragment : BaseFragment() {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(48.dp)
                                     .clip(CircleShape)
                                     .clickable {
                                         runBlocking {
-                                            delay(120)
+                                            val timeMillis = ONE_HUNDRED.plus(THIRTY).milliseconds
+
+                                            delay(timeMillis)
                                             onClick(difficulty)
                                         }
                                     },
@@ -359,6 +366,7 @@ class HomeFragment : BaseFragment() {
                             ) {
                                 Text(
                                     text = text,
+                                    modifier = Modifier.padding(vertical = 12.dp),
                                     textAlign = TextAlign.Center,
                                 )
                             }

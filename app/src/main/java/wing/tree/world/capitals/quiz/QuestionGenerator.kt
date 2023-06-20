@@ -2,40 +2,31 @@ package wing.tree.world.capitals.quiz
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import wing.tree.world.capitals.quiz.data.constant.THREE
+import wing.tree.world.capitals.quiz.data.constant.FOUR
 import wing.tree.world.capitals.quiz.data.constant.WorldCapitals
 import wing.tree.world.capitals.quiz.data.extension.not
 import wing.tree.world.capitals.quiz.data.model.Difficulty
+import wing.tree.world.capitals.quiz.data.model.Nation
 import wing.tree.world.capitals.quiz.model.Question
+
+private typealias Answer = Question.Option
 
 class QuestionGenerator {
     fun generate(difficulty: Difficulty): ImmutableList<Question> {
-        val worldCapitals = buildList {
-            addAll(WorldCapitals.Africa.nations)
-            addAll(WorldCapitals.America.nations)
-            addAll(WorldCapitals.Asia.nations)
-            addAll(WorldCapitals.Europe.nations)
-            addAll(WorldCapitals.Oceania.nations)
-        }
-            .map {
-                Question.Option(
-                    capital = it.capitals.random(),
-                    country = it.country,
-                )
-            }
+        val answers = WorldCapitals.nations.toAnswers()
 
-        val correctAnswers = worldCapitals
+        val correctAnswers = answers
             .shuffled()
             .take(difficulty.count)
 
         val questions = mutableListOf<Question>()
 
         correctAnswers.forEachIndexed { index, correctAnswer ->
-            val options = worldCapitals.filter { nation ->
-                correctAnswer not nation
+            val options = answers.filter { answer ->
+                answer not correctAnswer
             }
                 .shuffled()
-                .take(OPTION_COUNT)
+                .take(OPTION_COUNT.dec())
                 .toMutableList()
 
             options.apply {
@@ -55,7 +46,14 @@ class QuestionGenerator {
         return questions.toImmutableList()
     }
 
+    private fun List<Nation>.toAnswers(): List<Question.Option> = map {
+        Answer(
+            capital = it.capitals.random(),
+            country = it.country,
+        )
+    }
+
     companion object {
-        private const val OPTION_COUNT = THREE
+        private const val OPTION_COUNT = FOUR
     }
 }

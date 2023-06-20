@@ -74,6 +74,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.R
 import wing.tree.world.capitals.quiz.constant.Preferences
+import wing.tree.world.capitals.quiz.constant.ShadowElevation
+import wing.tree.world.capitals.quiz.constant.StarSize
 import wing.tree.world.capitals.quiz.data.constant.FOUR
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.constant.THREE
@@ -164,7 +166,7 @@ private fun Content(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Surface(shadowElevation = 4.dp) {
+            Surface(shadowElevation = ShadowElevation) {
                 Column {
                     CenterAlignedTopAppBar(
                         title = {
@@ -503,7 +505,7 @@ private fun Nation(
                 .align(Alignment.TopEnd)
                 .graphicsLayer {
                     translationX = 4.dp.toPx()
-                    translationY = -4.dp.toPx()
+                    translationY = 4.unaryMinus().dp.toPx()
                 },
             enter = scaleIn().plus(fadeIn()),
             exit = scaleOut().plus(fadeOut()),
@@ -511,7 +513,7 @@ private fun Nation(
             Icon(
                 imageVector = Icons.Rounded.Star,
                 contentDescription = null,
-                modifier = Modifier.size(16.dp),
+                modifier = Modifier.size(StarSize),
                 tint = colorScheme.primary,
             )
         }

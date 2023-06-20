@@ -305,4 +305,12 @@ sealed interface WorldCapitals : Comparable<WorldCapitals> {
 
         override val ordinal: Int = FOUR
     }
+
+    companion object {
+        val nations = America.nations
+            .plus(Asia.nations)
+            .plus(Europe.nations)
+            .plus(Oceania.nations)
+            .plus(Africa.nations)
+    }
 }

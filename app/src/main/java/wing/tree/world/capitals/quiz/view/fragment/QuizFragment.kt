@@ -69,7 +69,10 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.collections.immutable.persistentListOf
 import wing.tree.world.capitals.quiz.InterstitialAdLoader
 import wing.tree.world.capitals.quiz.R
+import wing.tree.world.capitals.quiz.constant.ShadowElevation
+import wing.tree.world.capitals.quiz.data.constant.BLANK
 import wing.tree.world.capitals.quiz.data.constant.ONE
+import wing.tree.world.capitals.quiz.data.constant.RIGHT_ANGLE
 import wing.tree.world.capitals.quiz.data.constant.SLASH
 import wing.tree.world.capitals.quiz.data.constant.TWO
 import wing.tree.world.capitals.quiz.data.constant.ZERO
@@ -226,7 +229,7 @@ private fun InProgress(
                     ) {
                         Row {
                             NumberText(number = round.inc(), digits = TWO)
-                            Text(text = " $SLASH ")
+                            Text(text = "$BLANK$SLASH$BLANK")
                             NumberText(number = count, digits = TWO)
                         }
                     }
@@ -298,7 +301,7 @@ private fun InProgress(
                 }
             }
 
-            Surface(modifier = Modifier.fillMaxWidth(), shadowElevation = 4.dp) {
+            Surface(modifier = Modifier.fillMaxWidth(), shadowElevation = ShadowElevation) {
                 Button(
                     onClick = {
                         if (round < count.dec()) {
@@ -451,7 +454,7 @@ private fun Summary(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Surface(shadowElevation = 4.dp) {
+            Surface(shadowElevation = ShadowElevation) {
                 CenterAlignedTopAppBar(
                     title = {
                         val count = summary.questions.count()
@@ -535,7 +538,10 @@ private fun Summary(
                 }
             }
 
-            Surface(modifier = Modifier.fillMaxWidth(), shadowElevation = 4.dp) {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shadowElevation = ShadowElevation,
+            ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -551,7 +557,7 @@ private fun Summary(
                                 .fillMaxWidth()
                                 .gradient(
                                     persistentListOf(SkyBlue, SpanishSkyBlue),
-                                    90f,
+                                    RIGHT_ANGLE,
                                 )
                                 .padding(horizontal = 24.dp, vertical = 12.dp),
                             contentAlignment = Alignment.Center,
@@ -575,7 +581,7 @@ private fun Summary(
                                 .fillMaxWidth()
                                 .gradient(
                                     persistentListOf(SkyBlue, SpanishSkyBlue),
-                                    90f,
+                                    RIGHT_ANGLE,
                                 )
                                 .padding(horizontal = 24.dp, vertical = 12.dp),
                             contentAlignment = Alignment.Center,
