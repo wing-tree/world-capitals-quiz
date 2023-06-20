@@ -65,8 +65,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
+import wing.tree.world.capitals.quiz.AdFreeChecker
 import wing.tree.world.capitals.quiz.InterstitialAdLoader
 import wing.tree.world.capitals.quiz.R
 import wing.tree.world.capitals.quiz.constant.ShadowElevation
@@ -97,6 +100,7 @@ import wing.tree.world.capitals.quiz.viewmodel.factory.QuizViewModelFactory
 import java.util.regex.Pattern
 
 class QuizFragment : BaseFragment() {
+    private val adFreeChecker = AdFreeChecker()
     private val interstitialAdLoader = InterstitialAdLoader()
     private val viewModel by viewModels<QuizViewModel> {
         val navArgs by navArgs<QuizFragmentArgs>()
@@ -109,7 +113,7 @@ class QuizFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        interstitialAdLoader.load(requireActivity())
+        interstitialAdLoader.load(requireContext())
 
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
@@ -119,8 +123,24 @@ class QuizFragment : BaseFragment() {
 
                     Content(
                         uiState = uiState,
-                        onClick = {
-                            when (it) {
+                        onClick = { action ->
+                            lifecycleScope.launch {
+                                if (adFreeChecker.check(requireContext()).not()) {
+                                    when (action) {
+                                        Action.Home, Action.Replay -> interstitialAdLoader.show(requireActivity())
+
+                                        is Action.DoubleBack ->  if (action.uiState.isSummary()) {
+                                            interstitialAdLoader.show(requireActivity())
+                                        }
+
+                                        else -> {
+                                            /* no-op */
+                                        }
+                                    }
+                                }
+                            }
+
+                            when (action) {
                                 Action.Back -> Toast.makeText(
                                     requireContext(),
                                     getString(R.string.press_the_back_button_once_more_to_exit),
@@ -129,23 +149,10 @@ class QuizFragment : BaseFragment() {
                                     .show()
 
                                 Action.Complete -> viewModel.complete()
-                                Action.Home -> {
-                                    interstitialAdLoader.show(requireActivity())
-                                    popBackStack()
-                                }
+                                Action.Home -> popBackStack()
+                                Action.Replay -> viewModel.replay()
 
-                                Action.Replay -> {
-                                    interstitialAdLoader.show(requireActivity())
-                                    viewModel.replay()
-                                }
-
-                                is Action.DoubleBack -> {
-                                    if (it.uiState is QuizUiState.Summary) {
-                                        interstitialAdLoader.show(requireActivity())
-                                    }
-
-                                    popBackStack()
-                                }
+                                is Action.DoubleBack -> popBackStack()
                             }
                         },
                         modifier = Modifier.fillMaxSize(),
@@ -154,6 +161,8 @@ class QuizFragment : BaseFragment() {
             }
         }
     }
+
+    private fun QuizUiState.isSummary() = this is QuizUiState.Summary
 }
 
 @Composable
