@@ -25,6 +25,7 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -121,6 +122,7 @@ class HomeFragment : BaseFragment() {
         ModalNavigationDrawer(
             drawerContent = {
                 DrawerContent(
+                    drawerState = drawerState,
                     modifier = Modifier
                         .width(IntrinsicSize.Max)
                         .clip(DrawerDefaults.shape)
@@ -287,8 +289,12 @@ class HomeFragment : BaseFragment() {
     }
 
     @Composable
-    private fun DrawerContent(modifier: Modifier = Modifier) {
+    private fun DrawerContent(
+        drawerState: DrawerState,
+        modifier: Modifier = Modifier,
+    ) {
         val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
 
         ModalDrawerSheet(
             modifier = modifier,
@@ -306,7 +312,14 @@ class HomeFragment : BaseFragment() {
                 },
                 selected = false,
                 onClick = {
+                    coroutineScope.launch {
+                        drawerState.close()
 
+                        val directions = HomeFragmentDirections
+                            .actionHomeFragmentToStoreFragment()
+
+                        navigate(directions)
+                    }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 icon = {
