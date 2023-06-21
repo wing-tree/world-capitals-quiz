@@ -183,11 +183,7 @@ class HomeFragment : BaseFragment() {
                         text = stringResource(id = R.string.app_name),
                         modifier = Modifier
                             .padding(vertical = 24.dp)
-                            .bounceVertically(
-                                targetValue = with(LocalDensity.current) {
-                                    4.dp.toPx()
-                                }
-                            ),
+                            .bounceVertically(targetValue = 4.dp),
                         textAlign = TextAlign.Center,
                         style = typography.displayMedium,
                     )
@@ -205,7 +201,9 @@ class HomeFragment : BaseFragment() {
                     )
 
                     Column(
-                        modifier = Modifier.width(IntrinsicSize.Max),
+                        modifier = Modifier
+                            .width(IntrinsicSize.Max)
+                            .bounceVertically(4.dp.unaryMinus()),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         ElevatedCard(

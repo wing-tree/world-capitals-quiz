@@ -15,6 +15,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import wing.tree.world.capitals.quiz.data.constant.SEVEN
@@ -31,6 +33,21 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
+
+fun Modifier.bounceVertically(
+    targetValue: Dp,
+    animation: DurationBasedAnimationSpec<Float> = tween(
+        durationMillis = SEVEN.hundreds,
+        easing = FastOutLinearInEasing,
+    ),
+): Modifier = composed {
+    bounceVertically(
+        targetValue = with(LocalDensity.current) {
+            targetValue.toPx()
+        },
+        animation = animation,
+    )
+}
 
 fun Modifier.bounceVertically(
     targetValue: Float,
