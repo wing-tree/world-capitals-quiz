@@ -19,9 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -42,12 +39,8 @@ fun Nation(
     onClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var favoritedState by remember(favorited) {
-        mutableStateOf(favorited)
-    }
-
     val containerColor by animateColorAsState(
-        targetValue = if (favoritedState) {
+        targetValue = if (favorited) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
             MaterialTheme.colorScheme.surface
@@ -57,7 +50,6 @@ fun Nation(
     Box(modifier = modifier) {
         ElevatedCard(
             onClick = {
-                favoritedState = favoritedState.not()
                 onClick(nation.key)
             },
             colors = elevatedCardColors(containerColor = containerColor),
@@ -108,7 +100,6 @@ fun Nation(
 
         IconButton(
             onClick = {
-                favoritedState = favoritedState.not()
                 onClick(nation.key)
             },
             modifier = Modifier
@@ -120,7 +111,7 @@ fun Nation(
                 },
         ) {
             val tint by animateColorAsState(
-                targetValue = if (favoritedState) {
+                targetValue = if (favorited) {
                     MaterialTheme.colorScheme.primary
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = ContentAlpha.medium)

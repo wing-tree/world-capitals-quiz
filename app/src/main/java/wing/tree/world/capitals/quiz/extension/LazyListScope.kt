@@ -8,6 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,10 +55,15 @@ fun LazyListScope.worldCapitals(
                 }
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
+                    var favorited by rememberSaveable {
+                        mutableStateOf(favorites.contains(nation.key))
+                    }
+
                     Nation(
                         nation = nation,
-                        favorited = favorites.contains(nation.key),
+                        favorited = favorited,
                         onClick = { key ->
+                            favorited = favorited.not()
                             onItemClick(key)
                         },
                         modifier = Modifier.fillMaxWidth(),
