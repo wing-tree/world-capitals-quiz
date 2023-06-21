@@ -16,5 +16,6 @@ data class Question(
         val capital: Capital,
         @StringRes
         val country: Int,
+        val key: String,
     )
 }

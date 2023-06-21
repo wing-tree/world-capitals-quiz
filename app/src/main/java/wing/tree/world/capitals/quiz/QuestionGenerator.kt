@@ -50,6 +50,7 @@ class QuestionGenerator {
         Answer(
             capital = it.capitals.random(),
             country = it.country,
+            key = it.key,
         )
     }
 

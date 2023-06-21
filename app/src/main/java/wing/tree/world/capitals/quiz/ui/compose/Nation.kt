@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -60,7 +60,7 @@ fun Nation(
                 favoritedState = favoritedState.not()
                 onClick(nation.key)
             },
-            colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
+            colors = elevatedCardColors(containerColor = containerColor),
         ) {
             Row(
                 modifier = Modifier

@@ -23,14 +23,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,12 +52,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -70,7 +78,10 @@ import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.AdFreeChecker
 import wing.tree.world.capitals.quiz.InterstitialAdLoader
 import wing.tree.world.capitals.quiz.R
+import wing.tree.world.capitals.quiz.constant.ContentAlpha
+import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ShadowElevation
+import wing.tree.world.capitals.quiz.constant.StarSize
 import wing.tree.world.capitals.quiz.data.constant.BLANK
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.constant.RIGHT_ANGLE
@@ -105,7 +116,10 @@ class QuizFragment : BaseFragment() {
     private val viewModel by viewModels<QuizViewModel> {
         val navArgs by navArgs<QuizFragmentArgs>()
 
-        QuizViewModelFactory(navArgs.difficulty)
+        QuizViewModelFactory(
+            application = requireActivity().application,
+            difficulty = navArgs.difficulty,
+        )
     }
 
     override fun onCreateView(
@@ -204,10 +218,23 @@ private fun Content(
                 onClick = onClick,
             )
 
-            is QuizUiState.Summary -> Summary(
-                summary = targetState,
-                onClick = onClick,
-            )
+            is QuizUiState.Summary -> {
+                val context = LocalContext.current
+                val coroutineScope = rememberCoroutineScope()
+
+                Summary(
+                    summary = targetState,
+                    onClick = onClick,
+                    onItemClick = { key ->
+                        coroutineScope.launch {
+                            Preferences.Favorites.toggle(
+                                context = context,
+                                value = key,
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -457,6 +484,7 @@ private fun Question(
 private fun Summary(
     summary: QuizUiState.Summary,
     onClick: (Action) -> Unit,
+    onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -500,6 +528,7 @@ private fun Summary(
                     val answer = it.options[it.answer.value ?: ZERO]
                     val correctAnswer = it.options[it.correctAnswer]
                     val country = stringResource(id = correctAnswer.country)
+                    val favorited = summary.favorites.contains(correctAnswer.key)
                     val regex = with("|$country") {
                         "(?=:$this)|(?<=:$this)"
                     }
@@ -520,27 +549,75 @@ private fun Summary(
                             }
                     }
 
-                    ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(text = text)
+                    var favoritedState by rememberSaveable {
+                        mutableStateOf(favorited)
+                    }
 
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                            ) {
-                                Text(
-                                    text = stringResource(id = answer.capital.capital),
-                                    color = when (answer) {
-                                        correctAnswer -> WhatsAppLightGreen
-                                        else -> RedditRed
-                                    },
-                                )
-
-                                Text(text = stringResource(id = correctAnswer.capital.capital))
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        val containerColor by animateColorAsState(
+                            targetValue = if (favoritedState) {
+                                colorScheme.primaryContainer
+                            } else {
+                                colorScheme.surface
                             }
+                        )
+
+                        ElevatedCard(
+                            onClick = {
+                                favoritedState = favoritedState.not()
+                                onItemClick(correctAnswer.key)
+                            },
+                            colors = elevatedCardColors(containerColor = containerColor),
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                Text(text = text)
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    Text(
+                                        text = stringResource(id = answer.capital.capital),
+                                        color = when (answer) {
+                                            correctAnswer -> WhatsAppLightGreen
+                                            else -> RedditRed
+                                        },
+                                    )
+
+                                    Text(text = stringResource(id = correctAnswer.capital.capital))
+                                }
+                            }
+                        }
+
+                        IconButton(
+                            onClick = {
+                                favoritedState = favoritedState.not()
+                                onItemClick(correctAnswer.key)
+                            },
+                            modifier = Modifier
+                                .size(40.dp)
+                                .align(Alignment.TopEnd)
+                                .graphicsLayer {
+                                    translationX = 16.dp.toPx()
+                                    translationY = 16.unaryMinus().dp.toPx()
+                                },
+                        ) {
+                            val tint by animateColorAsState(
+                                targetValue = if (favoritedState) {
+                                    colorScheme.primary
+                                } else {
+                                    colorScheme.onSurfaceVariant.copy(alpha = ContentAlpha.medium)
+                                }
+                            )
+
+                            Icon(
+                                imageVector = Icons.Rounded.Star,
+                                modifier = Modifier.size(StarSize),
+                                tint = tint,
+                            )
                         }
                     }
                 }

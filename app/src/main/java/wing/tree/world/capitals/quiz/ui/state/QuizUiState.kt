@@ -2,6 +2,7 @@ package wing.tree.world.capitals.quiz.ui.state
 
 import androidx.compose.runtime.MutableIntState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
 import wing.tree.world.capitals.quiz.model.Question
 
@@ -19,6 +20,7 @@ sealed interface QuizUiState {
 
     data class Summary(
         override val questions: ImmutableList<Question>,
+        val favorites: ImmutableSet<String>,
     ) : QuizUiState
 
     sealed interface Action {
