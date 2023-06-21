@@ -294,6 +294,21 @@ class HomeFragment : BaseFragment() {
             VerticalSpacer(height = 12.dp)
             NavigationDrawerItem(
                 label = {
+                    Text(text = stringResource(id = R.string.store))
+                },
+                selected = false,
+                onClick = {
+
+                },
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                icon = {
+                    Icon(painter = painterResource(id = R.drawable.round_store_24))
+                },
+                colors = colors,
+            )
+
+            NavigationDrawerItem(
+                label = {
                     Text(text = stringResource(id = R.string.leave_a_review))
                 },
                 selected = false,
