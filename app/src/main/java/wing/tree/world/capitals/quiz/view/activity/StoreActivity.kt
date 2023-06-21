@@ -40,11 +40,11 @@ class StoreActivity : ComponentActivity() {
                         }
                     )
                 },
-            ) { paddingValues ->
+            ) { innerPadding ->
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues),
+                        .padding(innerPadding),
                 ) {
 
                 }

@@ -32,7 +32,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -86,6 +85,7 @@ import wing.tree.world.capitals.quiz.model.Question
 import wing.tree.world.capitals.quiz.ui.compose.DoubleBackHandler
 import wing.tree.world.capitals.quiz.ui.compose.HorizontalSpacer
 import wing.tree.world.capitals.quiz.ui.compose.Icon
+import wing.tree.world.capitals.quiz.ui.compose.Loading
 import wing.tree.world.capitals.quiz.ui.compose.NumberText
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
@@ -193,14 +193,11 @@ private fun Content(
         )
 
         when (targetState) {
-            QuizUiState.Loading -> Box(
+            QuizUiState.Loading -> Loading(
                 modifier = Modifier
                     .fillMaxSize()
                     .systemBarsPadding(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            )
 
             is QuizUiState.InProgress -> InProgress(
                 inProgress = targetState,

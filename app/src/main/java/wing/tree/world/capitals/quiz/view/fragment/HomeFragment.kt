@@ -206,54 +206,34 @@ class HomeFragment : BaseFragment() {
                             .bounceVertically(4.dp.unaryMinus()),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        ElevatedCard(
+                        HomeElevatedButton(
+                            text = stringResource(id = R.string.world_capitals),
                             onClick = {
                                 val directions = HomeFragmentDirections
                                     .actionHomeFragmentToWorldCapitalsFragment()
 
                                 navigate(directions)
                             },
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .gradient(
-                                        persistentListOf(SpanishSkyBlue, FacebookBlue),
-                                        RIGHT_ANGLE,
-                                    )
-                                    .padding(horizontal = 24.dp, vertical = 12.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.world_capitals),
-                                    color = colorScheme.onPrimary,
-                                    style = typography.titleLarge,
-                                )
-                            }
-                        }
+                        )
 
-                        ElevatedCard(
+                        HomeElevatedButton(
+                            text = stringResource(id = R.string.favorites),
+                            onClick = {
+                                val directions = HomeFragmentDirections
+                                    .actionHomeFragmentToFavoritesFragment()
+
+                                navigate(directions)
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        HomeElevatedButton(
+                            text = stringResource(id = R.string.quiz),
                             onClick = {
                                 openDialog.value = true
                             },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .gradient(
-                                        persistentListOf(SpanishSkyBlue, FacebookBlue),
-                                        RIGHT_ANGLE
-                                    )
-                                    .padding(horizontal = 24.dp, vertical = 12.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.quiz),
-                                    color = colorScheme.onPrimary,
-                                    style = typography.titleLarge,
-                                )
-                            }
-                        }
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
 
                     VerticalSpacer(
@@ -271,6 +251,36 @@ class HomeFragment : BaseFragment() {
                         navigate(directions)
                         openDialog.value = false
                     },
+                )
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun HomeElevatedButton(
+        text: String,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier,
+    ) {
+        ElevatedCard(
+            onClick = onClick,
+            modifier = modifier,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .gradient(
+                        persistentListOf(SpanishSkyBlue, FacebookBlue),
+                        RIGHT_ANGLE
+                    )
+                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = text,
+                    color = colorScheme.onPrimary,
+                    style = typography.titleLarge,
                 )
             }
         }
