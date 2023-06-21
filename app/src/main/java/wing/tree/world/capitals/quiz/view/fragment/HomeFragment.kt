@@ -370,12 +370,6 @@ class HomeFragment : BaseFragment() {
                             .padding(12.dp),
                     ) {
                         Difficulty.values().forEach { difficulty ->
-                            val text = when (difficulty) {
-                                Difficulty.EASY -> stringResource(id = R.string.easy)
-                                Difficulty.MEDIUM -> stringResource(id = R.string.medium)
-                                Difficulty.HARD -> stringResource(id = R.string.hard)
-                            }
-
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -391,7 +385,7 @@ class HomeFragment : BaseFragment() {
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    text = text,
+                                    text = "${difficulty.count} ${stringResource(id = R.string.questions)}",
                                     modifier = Modifier.padding(vertical = 12.dp),
                                     textAlign = TextAlign.Center,
                                 )
