@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -72,6 +70,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.R
+import wing.tree.world.capitals.quiz.constant.ContentAlpha.medium
 import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ShadowElevation
 import wing.tree.world.capitals.quiz.constant.StarSize
@@ -133,12 +132,10 @@ class WorldCapitalsFragment : BaseFragment() {
                                     CircularProgressIndicator()
                                 }
 
-                                is WorldCapitalsUiState.Content -> {
-                                    Content(
-                                        content = targetState,
-                                        modifier = Modifier.fillMaxSize(),
-                                    )
-                                }
+                                is WorldCapitalsUiState.Content -> Content(
+                                    content = targetState,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
                             }
                         }
                     }
@@ -162,6 +159,10 @@ private fun Content(
 
     var showOnlyFavorites by rememberSaveable {
         mutableStateOf(false)
+    }
+
+    BackHandler(enabled = showOnlyFavorites) {
+        showOnlyFavorites = false
     }
 
     Scaffold(
@@ -218,7 +219,7 @@ private fun Content(
                                 val targetValue = if (showOnlyFavorites) {
                                     colorScheme.primary
                                 } else {
-                                    colorScheme.onSurfaceVariant
+                                    colorScheme.onSurfaceVariant.copy(alpha = medium)
                                 }
 
                                 val tint by animateColorAsState(targetValue = targetValue)
@@ -475,7 +476,7 @@ private fun Nation(
             Row(
                 modifier = Modifier
                     .wrapContentHeight(Alignment.CenterVertically)
-                    .padding(vertical = 12.dp),
+                    .padding(vertical = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -516,21 +517,31 @@ private fun Nation(
             }
         }
 
-        AnimatedVisibility(
-            visible = favoritedState,
+        IconButton(
+            onClick = {
+                favoritedState = favoritedState.not()
+                onClick(nation.key)
+            },
             modifier = Modifier
+                .size(40.dp)
                 .align(Alignment.TopEnd)
                 .graphicsLayer {
-                    translationX = 4.dp.toPx()
-                    translationY = 4.unaryMinus().dp.toPx()
+                    translationX = 16.dp.toPx()
+                    translationY = 16.unaryMinus().dp.toPx()
                 },
-            enter = scaleIn().plus(fadeIn()),
-            exit = scaleOut().plus(fadeOut()),
         ) {
+            val tint by animateColorAsState(
+                targetValue = if (favoritedState) {
+                    colorScheme.primary
+                } else {
+                    colorScheme.onSurfaceVariant.copy(alpha = medium)
+                }
+            )
+
             Icon(
                 imageVector = Icons.Rounded.Star,
                 modifier = Modifier.size(StarSize),
-                tint = colorScheme.primary,
+                tint = tint,
             )
         }
     }
