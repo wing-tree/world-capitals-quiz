@@ -6,6 +6,6 @@ sealed interface WorldCapitalsUiState {
     object Loading : WorldCapitalsUiState
 
     data class Content(
-        val starred: ImmutableSet<String>,
+        val favorites: ImmutableSet<String>,
     ) : WorldCapitalsUiState
 }

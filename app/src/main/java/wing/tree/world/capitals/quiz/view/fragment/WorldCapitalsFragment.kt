@@ -160,7 +160,7 @@ private fun Content(
     val lazyListState = rememberLazyListState()
     val navController = LocalNavController.current
 
-    var showOnlyStarred by rememberSaveable {
+    var showOnlyFavorites by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -172,7 +172,7 @@ private fun Content(
                     CenterAlignedTopAppBar(
                         title = {
                             AnimatedContent(
-                                targetState = showOnlyStarred,
+                                targetState = showOnlyFavorites,
                                 transitionSpec = {
                                     if (targetState) {
                                         slideInHorizontally {
@@ -191,7 +191,7 @@ private fun Content(
                             ) {
                                 if (it) {
                                     Text(
-                                        text = stringResource(id = R.string.starred),
+                                        text = stringResource(id = R.string.favorites),
                                         modifier = Modifier.fillMaxWidth(),
                                         textAlign = TextAlign.Center,
                                     )
@@ -212,10 +212,10 @@ private fun Content(
                         actions = {
                             IconButton(
                                 onClick = {
-                                    showOnlyStarred = showOnlyStarred.not()
+                                    showOnlyFavorites = showOnlyFavorites.not()
                                 },
                             ) {
-                                val targetValue = if (showOnlyStarred) {
+                                val targetValue = if (showOnlyFavorites) {
                                     colorScheme.primary
                                 } else {
                                     colorScheme.onSurfaceVariant
@@ -255,12 +255,12 @@ private fun Content(
         }
     ) { paddingValues ->
         Content(
-            showOnlyStarred = showOnlyStarred,
-            starred = content.starred,
+            showOnlyFavorites = showOnlyFavorites,
+            favorites = content.favorites,
             lazyListState = lazyListState,
             onItemClick = { key ->
                 coroutineScope.launch(ioDispatcher) {
-                    Preferences.Starred.toggle(context, key)
+                    Preferences.Favorites.toggle(context, key)
                 }
             },
             modifier = Modifier
@@ -322,14 +322,14 @@ private fun Title(
 
 @Composable
 private fun Content(
-    showOnlyStarred: Boolean,
-    starred: ImmutableSet<String>,
+    showOnlyFavorites: Boolean,
+    favorites: ImmutableSet<String>,
     lazyListState: LazyListState,
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
-        targetState = showOnlyStarred,
+        targetState = showOnlyFavorites,
         modifier = modifier,
         transitionSpec = {
             if (targetState) {
@@ -348,14 +348,14 @@ private fun Content(
         },
     ) { targetState ->
         if (targetState) {
-            Starred(
-                starred = starred,
+            Favorites(
+                favorites = favorites,
                 onItemClick = onItemClick,
                 modifier = Modifier.fillMaxSize(),
             )
         } else {
             WorldCapitals(
-                starred = starred,
+                favorites = favorites,
                 lazyListState = lazyListState,
                 onItemClick = onItemClick,
                 modifier = Modifier.fillMaxSize(),
@@ -366,7 +366,7 @@ private fun Content(
 
 @Composable
 private fun WorldCapitals(
-    starred: ImmutableSet<String>,
+    favorites: ImmutableSet<String>,
     lazyListState: LazyListState,
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -379,8 +379,8 @@ private fun WorldCapitals(
         listOf(America, Asia, Europe, Oceania, Africa).forEach {
             worldCapitals(
                 worldCapitals = it,
-                showOnlyStarred = false,
-                starred = starred,
+                showOnlyFavorites = false,
+                favorites = favorites,
                 onItemClick = onItemClick,
             )
         }
@@ -388,16 +388,16 @@ private fun WorldCapitals(
 }
 
 @Composable
-private fun Starred(
-    starred: ImmutableSet<String>,
+private fun Favorites(
+    favorites: ImmutableSet<String>,
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val rememberStarred = remember {
-        starred
+    val rememberFavorites = remember {
+        favorites
     }
 
-    if (rememberStarred.isNotEmpty()) {
+    if (rememberFavorites.isNotEmpty()) {
         LazyColumn(
             modifier = modifier,
             state = rememberLazyListState(),
@@ -406,8 +406,8 @@ private fun Starred(
             listOf(America, Asia, Europe, Oceania, Africa).forEach {
                 worldCapitals(
                     worldCapitals = it,
-                    showOnlyStarred = true,
-                    starred = rememberStarred,
+                    showOnlyFavorites = true,
+                    favorites = rememberFavorites,
                     onItemClick = onItemClick,
                 )
             }
@@ -424,7 +424,7 @@ private fun Starred(
             )
             
             VerticalSpacer(height = 16.dp)
-            Text(text = stringResource(id = R.string.there_are_no_starred_countries))
+            Text(text = stringResource(id = R.string.there_are_no_favorited_countries))
         }
     }
 }
@@ -448,16 +448,16 @@ private fun Continent(
 @Composable
 private fun Nation(
     nation: Nation,
-    starred: Boolean,
+    favorited: Boolean,
     onClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var starredState by remember(starred) {
-        mutableStateOf(starred)
+    var favoritedState by remember(favorited) {
+        mutableStateOf(favorited)
     }
 
     val containerColor by animateColorAsState(
-        targetValue = if (starredState) {
+        targetValue = if (favoritedState) {
             colorScheme.primaryContainer
         } else {
             colorScheme.surface
@@ -467,7 +467,7 @@ private fun Nation(
     Box(modifier = modifier) {
         ElevatedCard(
             onClick = {
-                starredState = starredState.not()
+                favoritedState = favoritedState.not()
                 onClick(nation.key)
             },
             colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
@@ -517,7 +517,7 @@ private fun Nation(
         }
 
         AnimatedVisibility(
-            visible = starredState,
+            visible = favoritedState,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .graphicsLayer {
@@ -556,14 +556,14 @@ private fun indexRange(worldCapitals: WorldCapitals): IntRange {
 
 private fun LazyListScope.worldCapitals(
     worldCapitals: WorldCapitals,
-    showOnlyStarred: Boolean,
-    starred: ImmutableSet<String>,
+    showOnlyFavorites: Boolean,
+    favorites: ImmutableSet<String>,
     onItemClick: (key: String) -> Unit,
 ) {
     with(worldCapitals) {
-        val visible = when (showOnlyStarred) {
+        val visible = when (showOnlyFavorites) {
             true -> worldCapitals
-                .starred(starred)
+                .favorites(favorites)
                 .isNotEmpty()
 
             false -> true
@@ -582,15 +582,15 @@ private fun LazyListScope.worldCapitals(
             }
         ) { nation ->
             if (
-                when (showOnlyStarred) {
-                    true -> starred.contains(nation.key)
+                when (showOnlyFavorites) {
+                    true -> favorites.contains(nation.key)
                     false -> true
                 }
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Nation(
                         nation = nation,
-                        starred = starred.contains(nation.key),
+                        favorited = favorites.contains(nation.key),
                         onClick = { key ->
                             onItemClick(key)
                         },
@@ -614,6 +614,6 @@ private val Continent.stringRes: Int
         else -> R.string.africa
     }
 
-private fun WorldCapitals.starred(set: Set<String>) = nations.filter {
+private fun WorldCapitals.favorites(set: Set<String>) = nations.filter {
     set.contains(it.key)
 }

@@ -7,6 +7,7 @@
     <string name="country">Country</string>
     <string name="easy">Easy</string>
     <string name="europe">Europe</string>
+    <string name="favorites">Favorites</string>
     <string name="format">What is the capital of %s?</string>
     <string name="hard">Hard</string>
     <string name="home">Home</string>
@@ -18,9 +19,8 @@
     <string name="quiz">Quiz</string>
     <string name="replay">Replay</string>
     <string name="share_the_app">Share the App</string>
-    <string name="starred">Starred</string>
     <string name="store">Store</string>
     <string name="thank_you_for_your_valuable_review">Thank you for your valuable review.</string>
-    <string name="there_are_no_starred_countries">There are no starred countries.</string>
+    <string name="there_are_no_favorited_countries">There are no favorited countries.</string>
     <string name="world_capitals">World Capitals</string>
 </resources>

@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import wing.tree.world.capitals.quiz.constant.Preferences.Starred
+import wing.tree.world.capitals.quiz.constant.Preferences.Favorites
 import wing.tree.world.capitals.quiz.data.constant.THREE
 import wing.tree.world.capitals.quiz.data.extension.hundreds
 import wing.tree.world.capitals.quiz.data.extension.milliseconds
@@ -20,13 +20,13 @@ class WorldCapitalsViewModel(
 ) : AndroidViewModel(application) {
     private val isLoading = AtomicBoolean(true)
 
-    val uiState = Starred(application).map { starred ->
+    val uiState = Favorites(application).map { favorites ->
         if (isLoading.compareAndSet(true, false)) {
             delay(THREE.hundreds.milliseconds)
         }
 
         WorldCapitalsUiState.Content(
-            starred = starred.toImmutableSet(),
+            favorites = favorites.toImmutableSet(),
         )
     }.stateIn(
         scope = viewModelScope,

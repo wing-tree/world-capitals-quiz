@@ -60,8 +60,8 @@ sealed interface Preferences : Function1<Context, Flow<*>> {
         }
     }
 
-    object Starred : Preferences {
-        override val name = "starred"
+    object Favorites : Preferences {
+        override val name = "favorites"
         override val key: Key<Set<String>> = stringSetPreferencesKey(name)
 
         override fun invoke(context: Context): Flow<Set<String>> = context
