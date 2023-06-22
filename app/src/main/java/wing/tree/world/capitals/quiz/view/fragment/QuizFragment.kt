@@ -522,7 +522,7 @@ private fun Summary(
             LazyColumn(
                 modifier = Modifier.weight(ONE.float),
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(summary.questions) {
                     val answer = it.options[it.answer.value ?: ZERO]

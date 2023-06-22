@@ -26,7 +26,7 @@ class MainViewModel(private val application: Application) : AndroidViewModel(app
 
                     if (value.purchased) {
                         processPurchase(value).orNull()?.let {
-                            if (ProductId.remove_ads in it.products) {
+                            if (ProductId.ad_free in it.products) {
                                 Preferences.AdFreePurchased.put(application, true)
                             }
                         }
