@@ -44,6 +44,7 @@ import wing.tree.world.capitals.quiz.data.constant.EMPTY
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.model.InAppProduct
+import wing.tree.world.capitals.quiz.ui.compose.Empty
 import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.Loading
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
@@ -133,17 +134,28 @@ private fun Content(
             )
         },
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-        ) {
-            items(content.inAppProducts) {
-                InAppProduct(
-                    inAppProduct = it,
-                    onClick = onItemClick,
-                )
+        val inAppProducts = content.inAppProducts
+
+        if (inAppProducts.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+            ) {
+                items(inAppProducts) {
+                    InAppProduct(
+                        inAppProduct = it,
+                        onClick = onItemClick,
+                    )
+                }
             }
+        } else {
+            Empty(
+                text = stringResource(id = R.string.no_products_are_currently_available_for_sale),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+            )
         }
     }
 }
