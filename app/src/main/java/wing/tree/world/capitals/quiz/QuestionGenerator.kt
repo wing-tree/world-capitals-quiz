@@ -7,9 +7,10 @@ import wing.tree.world.capitals.quiz.data.constant.WorldCapitals
 import wing.tree.world.capitals.quiz.data.extension.not
 import wing.tree.world.capitals.quiz.data.model.Difficulty
 import wing.tree.world.capitals.quiz.data.model.Nation
+import wing.tree.world.capitals.quiz.data.model.Option
 import wing.tree.world.capitals.quiz.model.Question
 
-private typealias Answer = Question.Option
+private typealias Answer = Option
 
 class QuestionGenerator {
     fun generate(difficulty: Difficulty): ImmutableList<Question> {
@@ -46,7 +47,7 @@ class QuestionGenerator {
         return questions.toImmutableList()
     }
 
-    private fun List<Nation>.toAnswers(): List<Question.Option> = map {
+    private fun List<Nation>.toAnswers(): List<Answer> = map {
         Answer(
             capital = it.capitals.random(),
             country = it.country,
