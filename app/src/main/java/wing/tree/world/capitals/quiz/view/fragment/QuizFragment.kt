@@ -102,7 +102,6 @@ import wing.tree.world.capitals.quiz.ui.compose.Loading
 import wing.tree.world.capitals.quiz.ui.compose.NumberText
 import wing.tree.world.capitals.quiz.ui.compose.ShareQuizDialog
 import wing.tree.world.capitals.quiz.ui.compose.Summary
-import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState.Action
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState.Content
@@ -398,16 +397,14 @@ private fun InProgress(
             animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
         )
 
-        VerticalSpacer(height = 24.dp)
         LinearProgressIndicator(
             progress = progress,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 24.dp),
             strokeCap = StrokeCap.Round,
         )
 
-        VerticalSpacer(height = 16.dp)
         AnimatedContent(
             targetState = question,
             modifier = Modifier.weight(ONE.float),
