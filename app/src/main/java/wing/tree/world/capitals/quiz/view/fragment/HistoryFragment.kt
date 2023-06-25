@@ -84,6 +84,7 @@ import wing.tree.world.capitals.quiz.data.model.History
 import wing.tree.world.capitals.quiz.extension.format
 import wing.tree.world.capitals.quiz.extension.gradient
 import wing.tree.world.capitals.quiz.extension.toQuiz
+import wing.tree.world.capitals.quiz.ui.compose.Empty
 import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.Loading
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
@@ -337,25 +338,36 @@ private fun Histories(
     onItemLongClick: (History) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        items(
-            items = histories.value,
-            key = {
-                it.primaryKey
+    AnimatedContent(
+        targetState = histories.value.isEmpty(),
+        transitionSpec = {
+            fadeIn() togetherWith fadeOut()
+        }
+    ) { targetState ->
+        if (targetState) {
+            Empty(text = stringResource(id = R.string.no_history_available))
+        } else {
+            LazyColumn(
+                modifier = modifier,
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(
+                    items = histories.value,
+                    key = {
+                        it.primaryKey
+                    }
+                ) { history ->
+                    History(
+                        history = history,
+                        onClick = onItemClick,
+                        onLongClick = onItemLongClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItemPlacement(),
+                    )
+                }
             }
-        ) { history ->
-            History(
-                history = history,
-                onClick = onItemClick,
-                onLongClick = onItemLongClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateItemPlacement(),
-            )
         }
     }
 }
