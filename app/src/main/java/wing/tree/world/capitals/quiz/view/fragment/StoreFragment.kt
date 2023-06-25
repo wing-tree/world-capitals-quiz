@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,12 +24,12 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
@@ -47,6 +48,7 @@ import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.model.InAppProduct
 import wing.tree.world.capitals.quiz.ui.compose.Empty
+import wing.tree.world.capitals.quiz.ui.compose.HorizontalSpacer
 import wing.tree.world.capitals.quiz.ui.compose.Icon
 import wing.tree.world.capitals.quiz.ui.compose.Loading
 import wing.tree.world.capitals.quiz.ui.compose.LocalActivity
@@ -179,7 +181,12 @@ private fun InAppProduct(
         },
         modifier = modifier,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
             val productDetails = inAppProduct.productDetails
 
             inAppProduct.imageResource?.let {
@@ -191,9 +198,8 @@ private fun InAppProduct(
             }
 
             Column(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .weight(ONE.float),
+                modifier = Modifier.weight(ONE.float),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
                     text = productDetails.name,
@@ -203,6 +209,7 @@ private fun InAppProduct(
                 Text(
                     text = productDetails.description,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = typography.labelLarge,
                 )
             }
 
@@ -211,9 +218,11 @@ private fun InAppProduct(
                 ?.formattedPrice
                 ?: EMPTY
 
+            HorizontalSpacer(width = 16.dp)
             Text(
                 text = formattedPrice,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = typography.labelMedium,
             )
         }
     }
