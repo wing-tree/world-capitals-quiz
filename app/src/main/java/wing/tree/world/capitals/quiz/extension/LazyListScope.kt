@@ -1,5 +1,6 @@
 package wing.tree.world.capitals.quiz.extension
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ fun LazyListScope.worldCapitals(
     worldCapitals: WorldCapitals,
     showOnlyFavorites: Boolean,
     favorites: ImmutableSet<String>,
+    context: Context,
     onItemClick: (key: String) -> Unit,
 ) {
     with(worldCapitals) {
@@ -43,7 +45,9 @@ fun LazyListScope.worldCapitals(
         }
 
         items(
-            items = nations,
+            items = nations.sortedBy {
+                context.getString(it.country)
+            },
             key = {
                 it.key
             }

@@ -355,6 +355,8 @@ private fun WorldCapitals(
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = modifier,
         state = lazyListState,
@@ -365,6 +367,7 @@ private fun WorldCapitals(
                 worldCapitals = it,
                 showOnlyFavorites = false,
                 favorites = favorites,
+                context = context,
                 onItemClick = onItemClick,
             )
         }
@@ -377,6 +380,7 @@ private fun Favorites(
     onItemClick: (key: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val rememberFavorites = remember {
         favorites
     }
@@ -392,6 +396,7 @@ private fun Favorites(
                     worldCapitals = it,
                     showOnlyFavorites = true,
                     favorites = rememberFavorites,
+                    context = context,
                     onItemClick = onItemClick,
                 )
             }
