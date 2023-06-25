@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import wing.tree.world.capitals.quiz.R
 import wing.tree.world.capitals.quiz.data.constant.WorldCapitals
+import wing.tree.world.capitals.quiz.data.model.Nation
 import wing.tree.world.capitals.quiz.extension.worldCapitals
 
 @Composable
@@ -35,9 +36,9 @@ fun Favorites(
             listOf(WorldCapitals.America, WorldCapitals.Asia, WorldCapitals.Europe, WorldCapitals.Oceania, WorldCapitals.Africa).forEach {
                 worldCapitals(
                     worldCapitals = it,
+                    comparator = Nation.comparator(context),
                     showOnlyFavorites = true,
                     favorites = rememberFavorites,
-                    context = context,
                     onItemClick = onItemClick,
                 )
             }

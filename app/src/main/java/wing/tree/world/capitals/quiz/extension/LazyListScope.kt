@@ -19,14 +19,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import wing.tree.world.capitals.quiz.data.constant.WorldCapitals
 import wing.tree.world.capitals.quiz.data.model.Continent
+import wing.tree.world.capitals.quiz.data.model.Nation
 import wing.tree.world.capitals.quiz.ui.compose.Nation
 import wing.tree.world.capitals.quiz.ui.compose.VerticalSpacer
 
 fun LazyListScope.worldCapitals(
     worldCapitals: WorldCapitals,
+    comparator: Comparator<Nation>,
     showOnlyFavorites: Boolean,
     favorites: ImmutableSet<String>,
-    context: Context,
     onItemClick: (key: String) -> Unit,
 ) {
     with(worldCapitals) {
@@ -45,9 +46,7 @@ fun LazyListScope.worldCapitals(
         }
 
         items(
-            items = nations.sortedBy {
-                context.getString(it.country)
-            },
+            items = nations.sortedWith(comparator),
             key = {
                 it.key
             }

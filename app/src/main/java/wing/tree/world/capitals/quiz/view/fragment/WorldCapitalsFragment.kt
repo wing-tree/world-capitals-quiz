@@ -73,6 +73,7 @@ import wing.tree.world.capitals.quiz.data.constant.WorldCapitals.Oceania
 import wing.tree.world.capitals.quiz.data.constant.ZERO
 import wing.tree.world.capitals.quiz.data.extension.float
 import wing.tree.world.capitals.quiz.data.extension.half
+import wing.tree.world.capitals.quiz.data.model.Nation
 import wing.tree.world.capitals.quiz.extension.stringRes
 import wing.tree.world.capitals.quiz.extension.worldCapitals
 import wing.tree.world.capitals.quiz.ui.compose.Empty
@@ -365,9 +366,9 @@ private fun WorldCapitals(
         listOf(America, Asia, Europe, Oceania, Africa).forEach {
             worldCapitals(
                 worldCapitals = it,
+                comparator = Nation.comparator(context),
                 showOnlyFavorites = false,
                 favorites = favorites,
-                context = context,
                 onItemClick = onItemClick,
             )
         }
@@ -394,9 +395,9 @@ private fun Favorites(
             listOf(America, Asia, Europe, Oceania, Africa).forEach {
                 worldCapitals(
                     worldCapitals = it,
+                    comparator = Nation.comparator(context),
                     showOnlyFavorites = true,
                     favorites = rememberFavorites,
-                    context = context,
                     onItemClick = onItemClick,
                 )
             }
