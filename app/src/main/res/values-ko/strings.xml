@@ -6,15 +6,18 @@
     <string name="asia">아시아</string>
     <string name="capital">수도</string>
     <string name="country">나라</string>
+    <string name="delete">삭제</string>
     <string name="easy">쉬움</string>
     <string name="europe">유럽</string>
     <string name="favorites">즐겨찾기</string>
     <string name="format">%s의 수도는?</string>
     <string name="hard">어려움</string>
-    <string name="home">홈</string>
     <string name="histories">기록</string>
+    <string name="home">홈</string>
+    <string name="hours_format">a h:mm</string>
     <string name="leave_a_review">리뷰쓰기</string>
     <string name="medium">보통</string>
+    <string name="months_format">MMM dd일</string>
     <string name="next">다음</string>
     <string name="no_products_are_currently_available_for_sale">현재 판매 가능한 상품이 없습니다.</string>
     <string name="oceania">오세아니아</string>
@@ -23,8 +26,11 @@
     <string name="quiz">퀴즈</string>
     <string name="replay">다시하기</string>
     <string name="share_the_app">앱 공유하기</string>
+    <string name="share_the_quiz">퀴즈 공유하기</string>
     <string name="store">스토어</string>
     <string name="thank_you_for_your_valuable_review">소중한 리뷰 감사합니다.</string>
     <string name="there_are_no_favorited_countries">즐겨찾기된 나라가 없습니다.</string>
+    <string name="with_answers">정답 포함</string>
     <string name="world_capitals">세계 수도</string>
+    <string name="yesterday">어제</string>
 </resources>

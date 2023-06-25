@@ -5,6 +5,7 @@
     <string name="asia">Asia</string>
     <string name="capital">Capital</string>
     <string name="country">Country</string>
+    <string name="delete">Delete</string>
     <string name="easy">Easy</string>
     <string name="europe">Europe</string>
     <string name="favorites">Favorites</string>
@@ -12,8 +13,10 @@
     <string name="hard">Hard</string>
     <string name="histories">Histories</string>
     <string name="home">Home</string>
+    <string name="hours_format">h:mm a</string>
     <string name="leave_a_review">Leave a Review</string>
     <string name="medium">Medium</string>
+    <string name="months_format">MMM dd</string>
     <string name="next">Next</string>
     <string name="no_products_are_currently_available_for_sale">No products are currently available for sale.</string>
     <string name="oceania">Oceania</string>
@@ -22,8 +25,12 @@
     <string name="quiz">Quiz</string>
     <string name="replay">Replay</string>
     <string name="share_the_app">Share the App</string>
+    <string name="share_the_quiz">Share the Quiz</string>
     <string name="store">Store</string>
     <string name="thank_you_for_your_valuable_review">Thank you for your valuable review.</string>
     <string name="there_are_no_favorited_countries">There are no favorited countries.</string>
+    <string name="with_answers">with answers</string>
     <string name="world_capitals">World Capitals</string>
+    <string name="years_format" translatable="false">yyyy.MM.dd</string>
+    <string name="yesterday">Yesterday</string>
 </resources>
