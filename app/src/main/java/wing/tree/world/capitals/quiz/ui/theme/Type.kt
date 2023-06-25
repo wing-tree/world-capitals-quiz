@@ -15,6 +15,8 @@ val Typography = with(Typography()) {
         titleLarge = titleLarge.copy(fontFamily = KotraHope),
         titleMedium = titleMedium.copy(fontFamily = KotraHope),
         bodyLarge = bodyLarge.copy(fontFamily = KotraHope),
+        labelLarge = labelLarge.copy(fontFamily = KotraHope),
+        labelMedium = labelMedium.copy(fontFamily = KotraHope),
         labelSmall = labelSmall.copy(fontFamily = KotraHope),
     )
 }
