@@ -16,17 +16,26 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider.AndroidViewModelFactory(application)
     }
 
+    private val billingService by lazy {
+        viewModel.billingService
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        with(viewModel.billingService) {
+        with(billingService) {
             setup(lifecycleOwner) {
                 if (it.responseCode == BillingClient.BillingResponseCode.OK) {
                     queryPurchases(BillingClient.ProductType.INAPP)
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        billingService.queryPurchases(BillingClient.ProductType.INAPP)
     }
 }

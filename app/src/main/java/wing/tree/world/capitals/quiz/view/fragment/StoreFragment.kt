@@ -60,6 +60,10 @@ class StoreFragment : BaseFragment() {
         ViewModelProvider.AndroidViewModelFactory(application)
     }
 
+    private val billingService by lazy {
+        viewModel.billingService
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,11 +95,10 @@ class StoreFragment : BaseFragment() {
                                 is StoreUiState.Content -> Content(
                                     content = targetState,
                                     onItemClick = { inAppProduct ->
-                                        viewModel.billingService
-                                            .launchBillingFlow(
-                                                activity = activity,
-                                                productDetails = inAppProduct.productDetails,
-                                            )
+                                        billingService.launchBillingFlow(
+                                            activity = activity,
+                                            productDetails = inAppProduct.productDetails,
+                                        )
                                     },
                                     modifier = Modifier.fillMaxSize(),
                                 )
