@@ -188,7 +188,11 @@ private fun Content(
                         navigationIcon = {
                             IconButton(
                                 onClick = {
-                                    navController.popBackStack()
+                                    if (showOnlyFavorites) {
+                                        showOnlyFavorites = false
+                                    } else {
+                                        navController.popBackStack()
+                                    }
                                 },
                             ) {
                                 Icon(imageVector = Icons.Rounded.ArrowBack)
