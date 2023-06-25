@@ -38,6 +38,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_homeFragment_to_historiesFragment"
+            app:destination="@id/historiesFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -47,6 +54,13 @@
         <argument
             android:name="difficulty"
             app:argType="wing.tree.world.capitals.quiz.data.model.Difficulty" />
+        <action
+            android:id="@+id/action_quizFragment_to_historiesFragment"
+            app:destination="@id/historiesFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -61,5 +75,9 @@
         android:id="@+id/storeFragment"
         android:name="wing.tree.world.capitals.quiz.view.fragment.StoreFragment"
         android:label="StoreFragment" />
+    <fragment
+        android:id="@+id/historiesFragment"
+        android:name="wing.tree.world.capitals.quiz.view.fragment.HistoryFragment"
+        android:label="HistoriesFragment" />
 
 </navigation>

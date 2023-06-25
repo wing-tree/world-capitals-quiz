@@ -30,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.painterResource
@@ -40,6 +41,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.findNavController
 import wing.tree.world.capitals.quiz.R
+import wing.tree.world.capitals.quiz.constant.ShadowElevation
 import wing.tree.world.capitals.quiz.data.constant.EMPTY
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.extension.float
@@ -122,6 +124,7 @@ private fun Content(
                 title = {
                     Text(text = stringResource(id = R.string.store))
                 },
+                modifier = Modifier.shadow(elevation = ShadowElevation),
                 navigationIcon = {
                     IconButton(
                         onClick = {

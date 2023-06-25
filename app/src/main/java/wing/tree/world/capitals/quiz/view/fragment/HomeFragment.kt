@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -93,7 +94,9 @@ import wing.tree.world.capitals.quiz.ui.theme.CoolMint
 import wing.tree.world.capitals.quiz.ui.theme.FacebookBlue
 import wing.tree.world.capitals.quiz.ui.theme.SpanishSkyBlue
 import wing.tree.world.capitals.quiz.ui.theme.WorldCapitalsQuizTheme
+import wing.tree.world.capitals.quiz.view.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToHistoriesFragment
 import wing.tree.world.capitals.quiz.view.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToQuizFragment
+import wing.tree.world.capitals.quiz.view.fragment.HomeFragmentDirections.Companion.actionHomeFragmentToStoreFragment
 
 class HomeFragment : BaseFragment() {
     override fun onCreateView(
@@ -118,6 +121,12 @@ class HomeFragment : BaseFragment() {
     private fun Content(modifier: Modifier = Modifier) {
         val coroutineScope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+        BackHandler(drawerState.isOpen) {
+            coroutineScope.launch {
+                drawerState.close()
+            }
+        }
 
         ModalNavigationDrawer(
             drawerContent = {
@@ -247,7 +256,7 @@ class HomeFragment : BaseFragment() {
 
                 DifficultySelectionDialog(
                     openDialog = openDialog,
-                    onClick = { difficulty ->
+                    onItemClick = { difficulty ->
                         val directions = actionHomeFragmentToQuizFragment(difficulty)
 
                         navigate(directions)
@@ -314,16 +323,31 @@ class HomeFragment : BaseFragment() {
                 onClick = {
                     coroutineScope.launch {
                         drawerState.close()
-
-                        val directions = HomeFragmentDirections
-                            .actionHomeFragmentToStoreFragment()
-
-                        navigate(directions)
+                        navigate(actionHomeFragmentToStoreFragment())
                     }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
                 icon = {
                     Icon(painter = painterResource(id = R.drawable.round_store_24))
+                },
+                colors = colors,
+            )
+
+            NavigationDrawerItem(
+                label = {
+
+                    Text(text = stringResource(id = R.string.histories))
+                },
+                selected = false,
+                onClick = {
+                    coroutineScope.launch {
+                        drawerState.close()
+                        navigate(actionHomeFragmentToHistoriesFragment())
+                    }
+                },
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                icon = {
+                    Icon(painter = painterResource(id = R.drawable.round_history_24))
                 },
                 colors = colors,
             )
@@ -364,45 +388,47 @@ class HomeFragment : BaseFragment() {
     @Composable
     private fun DifficultySelectionDialog(
         openDialog: MutableState<Boolean>,
-        onClick: (Difficulty) -> Unit,
+        onItemClick: (Difficulty) -> Unit,
         modifier: Modifier = Modifier,
     ) {
-        if (openDialog.value) {
-            AlertDialog(
-                onDismissRequest = {
-                    openDialog.value = false
-                }
-            ) {
-                Surface(
-                    modifier = modifier.padding(28.dp),
-                    shape = ShapeDefaults.ExtraLarge,
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .gradient(persistentListOf(CoolMint, Color.White))
-                            .padding(12.dp),
-                    ) {
-                        Difficulty.values().forEach { difficulty ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(CircleShape)
-                                    .clickable {
-                                        runBlocking {
-                                            val timeMillis = ONE_HUNDRED.plus(THIRTY).milliseconds
+        if (openDialog.value.not()) {
+            return
+        }
 
-                                            delay(timeMillis)
-                                            onClick(difficulty)
-                                        }
-                                    },
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = "${difficulty.count} ${stringResource(id = R.string.questions)}",
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    textAlign = TextAlign.Center,
-                                )
-                            }
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            }
+        ) {
+            Surface(
+                modifier = modifier.padding(28.dp),
+                shape = ShapeDefaults.ExtraLarge,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .gradient(persistentListOf(CoolMint, Color.White))
+                        .padding(12.dp),
+                ) {
+                    Difficulty.values().forEach { difficulty ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(CircleShape)
+                                .clickable {
+                                    runBlocking {
+                                        val timeMillis = ONE_HUNDRED.plus(THIRTY).milliseconds
+
+                                        delay(timeMillis)
+                                        onItemClick(difficulty)
+                                    }
+                                },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "${difficulty.count} ${stringResource(id = R.string.questions)}",
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                textAlign = TextAlign.Center,
+                            )
                         }
                     }
                 }

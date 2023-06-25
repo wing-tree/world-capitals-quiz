@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -20,13 +21,19 @@ import wing.tree.world.capitals.quiz.data.constant.THREE
 import wing.tree.world.capitals.quiz.data.constant.ZERO
 import wing.tree.world.capitals.quiz.data.extension.hundreds
 import wing.tree.world.capitals.quiz.data.extension.milliseconds
+import wing.tree.world.capitals.quiz.data.model.AnswerReview
 import wing.tree.world.capitals.quiz.data.model.Difficulty
+import wing.tree.world.capitals.quiz.data.model.History
+import wing.tree.world.capitals.quiz.data.repository.HistoryRepository
+import wing.tree.world.capitals.quiz.model.Question
 import wing.tree.world.capitals.quiz.ui.state.QuizUiState
+import wing.tree.world.capitals.quiz.ui.state.QuizUiState.Content
 
 class QuizViewModel(
     application: Application,
     private val difficulty: Difficulty,
 ) : AndroidViewModel(application) {
+    private val historyRepository = HistoryRepository(application)
     private val ioDispatcher = Dispatchers.IO
     private val questionGenerator = QuestionGenerator()
     private val _uiState: MutableStateFlow<QuizUiState> = MutableStateFlow(QuizUiState.Loading)
@@ -41,7 +48,7 @@ class QuizViewModel(
 
                 delay(THREE.hundreds.milliseconds)
 
-                QuizUiState.InProgress(
+                Content.InProgress(
                     round = mutableIntStateOf(ZERO),
                     questions = questions.await()
                 )
@@ -53,16 +60,26 @@ class QuizViewModel(
         play()
     }
 
-    fun complete() {
+    fun complete(inProgress: Content.InProgress) {
         viewModelScope.launch(ioDispatcher) {
             val favorites = Preferences.Favorites(getApplication())
                 .firstOrNull()
                 ?: emptySet()
 
             _uiState.update {
-                QuizUiState.Summary(
-                    questions = it.questions,
+                val answerReviews = inProgress.questions.mapToAnswerReviews()
+
+                val history = History(
+                    difficulty = difficulty,
+                    answerReviews = answerReviews,
+                ).also {
+                    historyRepository.add(it)
+                }
+
+                Content.Summary(
+                    answerReviews = answerReviews,
                     favorites = favorites.toImmutableSet(),
+                    history = history,
                 )
             }
         }
@@ -77,4 +94,14 @@ class QuizViewModel(
             play()
         }
     }
+
+    private fun List<Question>.mapToAnswerReviews() = map { question ->
+        with(question) {
+            AnswerReview(
+                answer = options[answer.value ?: ZERO],
+                correctAnswer = options[correctAnswer],
+                round = round
+            )
+        }
+    }.toImmutableList()
 }
