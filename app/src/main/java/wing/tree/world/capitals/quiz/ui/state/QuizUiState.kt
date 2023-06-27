@@ -13,6 +13,8 @@ sealed interface QuizUiState {
     object Loading : QuizUiState
 
     sealed interface Content : QuizUiState {
+        val key: String
+
         val count: Int get() = when (this) {
             is InProgress -> questions.count()
             is Summary -> answerReviews.count()
@@ -21,16 +23,25 @@ sealed interface QuizUiState {
         data class InProgress(
             val questions: ImmutableList<Question>,
             val round: MutableIntState,
-        ) : Content
+        ) : Content {
+            override val key: String = Keys.IN_PROGRESS
+        }
 
         data class Summary(
             val answerReviews: ImmutableList<AnswerReview>,
             val favorites: ImmutableSet<String>,
             val history: History,
         ) : Content {
+            override val key: String = Keys.SUMMARY
+
             val score: Int get() = answerReviews.count {
                 it.correct
             }
+        }
+
+        private object Keys {
+            const val IN_PROGRESS = "in_progress"
+            const val SUMMARY = "summary"
         }
     }
 

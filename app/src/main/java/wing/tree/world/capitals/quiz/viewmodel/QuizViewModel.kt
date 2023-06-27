@@ -8,7 +8,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,10 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.QuestionGenerator
 import wing.tree.world.capitals.quiz.constant.Preferences
-import wing.tree.world.capitals.quiz.data.constant.THREE
 import wing.tree.world.capitals.quiz.data.constant.ZERO
-import wing.tree.world.capitals.quiz.data.extension.hundreds
-import wing.tree.world.capitals.quiz.data.extension.milliseconds
 import wing.tree.world.capitals.quiz.data.model.AnswerReview
 import wing.tree.world.capitals.quiz.data.model.Difficulty
 import wing.tree.world.capitals.quiz.data.model.History
@@ -41,13 +37,11 @@ class QuizViewModel(
 
     private fun play() {
         viewModelScope.launch(Dispatchers.Default) {
+            val questions = async {
+                questionGenerator.generate(difficulty)
+            }
+
             _uiState.update {
-                val questions = async {
-                    questionGenerator.generate(difficulty)
-                }
-
-                delay(THREE.hundreds.milliseconds)
-
                 Content.InProgress(
                     round = mutableIntStateOf(ZERO),
                     questions = questions.await()

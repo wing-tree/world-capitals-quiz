@@ -81,6 +81,7 @@ import wing.tree.world.capitals.quiz.InterstitialAdLoader
 import wing.tree.world.capitals.quiz.R
 import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ShadowElevation
+import wing.tree.world.capitals.quiz.constant.noOperations
 import wing.tree.world.capitals.quiz.data.constant.BLANK
 import wing.tree.world.capitals.quiz.data.constant.ONE
 import wing.tree.world.capitals.quiz.data.constant.RIGHT_ANGLE
@@ -154,9 +155,7 @@ class QuizFragment : BaseFragment() {
                                             interstitialAdLoader.show(requireActivity())
                                         }
 
-                                        else -> {
-                                            /* no-op */
-                                        }
+                                        else -> noOperations
                                     }
                                 }
                             }
@@ -337,8 +336,8 @@ private fun Content(
                 fadeIn() togetherWith fadeOut()
             },
             contentKey = {
-                it::class
-            }
+                it.key
+            },
         ) { targetState ->
             when (targetState) {
                 is Content.InProgress -> InProgress(
@@ -378,13 +377,9 @@ private fun InProgress(
     val questions = inProgress.questions
     val count = questions.count()
 
-    var round by remember {
-        inProgress.round
-    }
-    val question = remember(round) {
-        questions[round.coerceAtMost(count.dec())]
-    }
+    var round by inProgress.round
 
+    val question = questions[round.coerceAtMost(count.dec())]
     val answered by remember(round) {
         derivedStateOf {
             question.answer.value.isNotNull()
