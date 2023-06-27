@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace 'wing.tree.world.capitals.quiz'
-    compileSdk 33
+    compileSdk 34
 
     signingConfigs {
         Properties properties = new Properties()
@@ -29,7 +29,7 @@ android {
     defaultConfig {
         applicationId "wing.tree.world.capitals.quiz"
         minSdk 27
-        targetSdk 33
+        targetSdk 34
         versionCode 2
         versionName "1.1"
 
@@ -74,7 +74,7 @@ android {
 
 dependencies {
     implementation 'androidx.activity:activity-compose:1.7.2'
-    implementation 'androidx.compose.material3:material3:1.2.0-alpha03'
+    implementation 'androidx.compose.material3:material3:1.2.0-alpha02'
     implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.1'
