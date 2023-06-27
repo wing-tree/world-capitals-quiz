@@ -65,7 +65,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.R
@@ -139,14 +138,16 @@ class HistoryFragment : BaseFragment() {
 
                                                 is HistoryUiState.Action.Select -> {
                                                     lifecycleScope.launch {
-                                                        delay(130L)
+                                                        val timeMillis = ONE_HUNDRED.plus(THIRTY).milliseconds
+
+                                                        delay(timeMillis)
                                                         viewModel.select(action.history)
                                                     }
                                                 }
 
                                                 is HistoryUiState.Action.Favorite -> {
                                                     lifecycleScope.launch {
-                                                        Preferences.Favorites.toggle(context, action.key)
+                                                        Preferences.Favorites.toggle(requireContext(), action.key)
                                                     }
                                                 }
 
@@ -242,7 +243,7 @@ private fun Content(
                 is HistoryUiState.Content.Summary -> {
                     Summary(
                         answerReviews = targetState.history.answerReviews,
-                        favorites = persistentSetOf(),
+                        favorites = targetState.favorites,
                         onItemClick = {
                             onClick(HistoryUiState.Action.Favorite(it))
                         },

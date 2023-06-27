@@ -61,7 +61,6 @@ fun Summary(
             val answer = it.answer
             val correctAnswer = it.correctAnswer
             val country = stringResource(id = correctAnswer.country)
-            val favorited = favorites.contains(correctAnswer.key)
             val regex = with("|$country") {
                 "(?=:$this)|(?<=:$this)"
             }
@@ -82,13 +81,13 @@ fun Summary(
                     }
             }
 
-            var favoritedState by rememberSaveable {
-                mutableStateOf(favorited)
+            var favorited by rememberSaveable {
+                mutableStateOf(favorites.contains(correctAnswer.key))
             }
 
             Box(modifier = Modifier.fillMaxSize()) {
                 val containerColor by animateColorAsState(
-                    targetValue = if (favoritedState) {
+                    targetValue = if (favorited) {
                         MaterialTheme.colorScheme.primaryContainer
                     } else {
                         MaterialTheme.colorScheme.surface
@@ -97,7 +96,7 @@ fun Summary(
 
                 ElevatedCard(
                     onClick = {
-                        favoritedState = favoritedState.not()
+                        favorited = favorited.not()
                         onItemClick(correctAnswer.key)
                     },
                     colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
@@ -127,7 +126,7 @@ fun Summary(
 
                 IconButton(
                     onClick = {
-                        favoritedState = favoritedState.not()
+                        favorited = favorited.not()
                         onItemClick(correctAnswer.key)
                     },
                     modifier = Modifier
@@ -139,7 +138,7 @@ fun Summary(
                         },
                 ) {
                     val tint by animateColorAsState(
-                        targetValue = if (favoritedState) {
+                        targetValue = if (favorited) {
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = ContentAlpha.medium)
