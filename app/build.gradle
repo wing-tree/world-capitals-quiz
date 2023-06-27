@@ -10,6 +10,22 @@ android {
     namespace 'wing.tree.world.capitals.quiz'
     compileSdk 33
 
+    signingConfigs {
+        Properties properties = new Properties()
+
+        properties.load(new FileInputStream("$project.rootDir/local.properties"))
+        properties.each {
+            project.ext.set(it.key, it.value)
+        }
+
+        release {
+            storeFile file(properties['storeFile'])
+            storePassword properties['storePassword']
+            keyAlias properties['keyAlias']
+            keyPassword properties['keyPassword']
+        }
+    }
+
     defaultConfig {
         applicationId "wing.tree.world.capitals.quiz"
         minSdk 27
@@ -27,6 +43,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
