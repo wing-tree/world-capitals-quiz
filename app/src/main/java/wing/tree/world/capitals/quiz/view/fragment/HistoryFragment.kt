@@ -122,7 +122,8 @@ class HistoryFragment : BaseFragment() {
                             },
                             contentKey = {
                                 it::class
-                            }
+                            },
+                            label = EMPTY
                         ) { targetState ->
                             when (targetState) {
                                 HistoryUiState.Loading -> Loading(modifier = Modifier.fillMaxSize())
@@ -226,7 +227,8 @@ private fun Content(
             },
             contentKey = {
                 it::class
-            }
+            },
+            label = EMPTY
         ) { targetState ->
             when (targetState) {
                 is HistoryUiState.Content.Histories -> Histories(
@@ -294,7 +296,8 @@ private fun Title(
         },
         contentKey = {
             content::class
-        }
+        },
+        label = EMPTY
     ) { targetState ->
         when (targetState) {
             is HistoryUiState.Content.Histories -> Text(text = stringResource(id = R.string.histories))
@@ -343,7 +346,8 @@ private fun Histories(
         targetState = histories.value.isEmpty(),
         transitionSpec = {
             fadeIn() togetherWith fadeOut()
-        }
+        },
+        label = EMPTY
     ) { targetState ->
         if (targetState) {
             Empty(text = stringResource(id = R.string.no_history_available))

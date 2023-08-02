@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.annotation.StringRes
 import wing.tree.world.capitals.quiz.R
+import wing.tree.world.capitals.quiz.calendar
 import wing.tree.world.capitals.quiz.data.constant.TWO
 import wing.tree.world.capitals.quiz.data.constant.ZERO
 import wing.tree.world.capitals.quiz.data.extension.`is`
@@ -16,11 +17,9 @@ private val Long.year: Int get() = Calendar.getInstance()
     }.get(Calendar.YEAR)
 
 fun Long.format(context: Context): String {
-    val duration = Calendar.getInstance().also {
-            it.timeInMillis = this
-        }
-        .get(Calendar.JULIAN_DAY)
-        .minus(Calendar.getInstance().get(Calendar.JULIAN_DAY))
+    val duration = calendar()
+        .julianDay
+        .minus(calendar(this).julianDay)
 
     val locale = Locale.getDefault()
 

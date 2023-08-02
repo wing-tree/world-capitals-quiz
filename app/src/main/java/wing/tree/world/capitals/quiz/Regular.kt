@@ -2,6 +2,13 @@ package wing.tree.world.capitals.quiz
 
 import android.content.Context
 import android.content.Intent
+import android.icu.util.Calendar
+
+fun calendar(timeInMillis: Long? = null): Calendar = Calendar.getInstance().apply {
+    timeInMillis?.let {
+        this.timeInMillis = it
+    }
+}
 
 fun noLocalProvidedFor(name: String): Nothing {
     error("CompositionLocal $name not present")
