@@ -267,7 +267,6 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun HomeElevatedButton(
         text: String,
@@ -276,7 +275,7 @@ class HomeFragment : BaseFragment() {
     ) {
         ElevatedCard(
             onClick = onClick,
-            modifier = modifier,
+            modifier = modifier
         ) {
             Box(
                 modifier = Modifier
@@ -285,7 +284,7 @@ class HomeFragment : BaseFragment() {
                         persistentListOf(SpanishSkyBlue, FacebookBlue),
                         RIGHT_ANGLE
                     )
-                    .padding(horizontal = 24.dp, vertical = 12.dp),
+                    .padding(horizontal = 36.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
