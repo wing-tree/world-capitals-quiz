@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import wing.tree.world.capitals.quiz.data.extension.toggle
 import wing.tree.world.capitals.quiz.extension.dataStore
 
-sealed interface Preferences : Function1<Context, Flow<*>> {
+sealed interface Preferences : (Context) -> Flow<*> {
     val name: String
     val key: Key<*>
 
