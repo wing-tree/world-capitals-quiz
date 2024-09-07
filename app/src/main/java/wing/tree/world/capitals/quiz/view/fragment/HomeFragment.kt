@@ -24,7 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -220,20 +220,18 @@ class HomeFragment : BaseFragment() {
                         HomeElevatedButton(
                             text = stringResource(id = R.string.world_capitals),
                             onClick = {
-                                val directions = HomeFragmentDirections
+                                HomeFragmentDirections
                                     .actionHomeFragmentToWorldCapitalsFragment()
-
-                                navigate(directions)
+                                    .let(::navigate)
                             },
                         )
 
                         HomeElevatedButton(
                             text = stringResource(id = R.string.favorites),
                             onClick = {
-                                val directions = HomeFragmentDirections
+                                HomeFragmentDirections
                                     .actionHomeFragmentToFavoritesFragment()
-
-                                navigate(directions)
+                                    .let(::navigate)
                             },
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -257,9 +255,8 @@ class HomeFragment : BaseFragment() {
                 DifficultySelectionDialog(
                     openDialog = openDialog,
                     onItemClick = { difficulty ->
-                        val directions = actionHomeFragmentToQuizFragment(difficulty)
+                        actionHomeFragmentToQuizFragment(difficulty).let(::navigate)
 
-                        navigate(directions)
                         openDialog.value = false
                     },
                 )
@@ -322,6 +319,7 @@ class HomeFragment : BaseFragment() {
                 onClick = {
                     coroutineScope.launch {
                         drawerState.close()
+
                         navigate(actionHomeFragmentToStoreFragment())
                     }
                 },
@@ -394,7 +392,7 @@ class HomeFragment : BaseFragment() {
             return
         }
 
-        AlertDialog(
+        BasicAlertDialog(
             onDismissRequest = {
                 openDialog.value = false
             }
@@ -408,7 +406,7 @@ class HomeFragment : BaseFragment() {
                         .gradient(persistentListOf(CoolMint, Color.White))
                         .padding(12.dp),
                 ) {
-                    Difficulty.values().forEach { difficulty ->
+                    Difficulty.entries.forEach { difficulty ->
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
