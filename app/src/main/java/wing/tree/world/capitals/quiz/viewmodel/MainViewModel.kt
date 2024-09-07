@@ -3,11 +3,11 @@ package wing.tree.world.capitals.quiz.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.wing.tree.bruni.billing.BillingService.Companion.purchased
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.BillingServiceProvider
+import wing.tree.world.capitals.quiz.billing.model.onSuccess
 import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ProductId
 import wing.tree.world.capitals.quiz.constant.products
@@ -21,14 +21,10 @@ class MainViewModel(private val application: Application) : AndroidViewModel(app
     init {
         viewModelScope.launch(ioDispatcher) {
             with(billingService) {
-                for (purchase in purchases) {
-                    val value = purchase.orNull() ?: continue
-
-                    if (value.purchased) {
-                        processPurchase(value).orNull()?.let {
-                            if (ProductId.ad_free in it.products) {
-                                Preferences.AdFreePurchased.put(application, true)
-                            }
+                purchasesResult.collect { purchaseResult ->
+                    purchaseResult.onSuccess {
+                        if (ProductId.ad_free in it.purchase.products) {
+                            Preferences.AdFreePurchased.put(application, true)
                         }
                     }
                 }

@@ -25,13 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        with(billingService) {
-            setup(lifecycleOwner) {
-                if (it.responseCode == BillingClient.BillingResponseCode.OK) {
-                    queryPurchases(BillingClient.ProductType.INAPP)
-                }
-            }
-        }
+        billingService.setup(lifecycleOwner)
     }
 
     override fun onResume() {

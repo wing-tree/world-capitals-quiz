@@ -1,8 +1,8 @@
 package wing.tree.world.capitals.quiz
 
 import android.content.Context
-import com.wing.tree.bruni.billing.BillingService
-import com.wing.tree.bruni.billing.model.Product
+import wing.tree.world.capitals.quiz.billing.model.Product
+import wing.tree.world.capitals.quiz.billing.service.BillingService
 
 object BillingServiceProvider {
     private var billingService: BillingService? = null

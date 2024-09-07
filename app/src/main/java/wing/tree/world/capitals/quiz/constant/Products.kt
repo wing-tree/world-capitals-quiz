@@ -1,6 +1,6 @@
 package wing.tree.world.capitals.quiz.constant
 
-import com.wing.tree.bruni.billing.model.Product
+import wing.tree.world.capitals.quiz.billing.model.Product
 
 val products = listOf(
     Product.INAPP(

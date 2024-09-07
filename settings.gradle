@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 rootProject.name = "World Capitals Quiz"
 include ':app'
 include ':data'
+include ':billing'

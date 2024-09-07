@@ -3,7 +3,7 @@ package wing.tree.world.capitals.quiz.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.wing.tree.bruni.billing.BillingService.Companion.purchased
+import arrow.core.Either
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import wing.tree.world.capitals.quiz.BillingServiceProvider
+import wing.tree.world.capitals.quiz.billing.model.onSuccess
 import wing.tree.world.capitals.quiz.constant.Preferences
 import wing.tree.world.capitals.quiz.constant.ProductId.ad_free
 import wing.tree.world.capitals.quiz.constant.products
@@ -26,11 +27,12 @@ class StoreViewModel(private val application: Application) : AndroidViewModel(ap
     )
 
     val uiState = billingService.productDetailsList.map { productDetailsList ->
-        val inAppProducts = productDetailsList?.map {
-            InAppProduct(
-                productDetails = it,
-            )
-        } ?: emptyList()
+        val inAppProducts = when (productDetailsList) {
+            is Either.Left -> emptyList()
+            is Either.Right -> productDetailsList.value?.map {
+                InAppProduct(productDetails = it)
+            } ?: emptyList()
+        }
 
         StoreUiState.Content(inAppProducts.toImmutableList())
     }.stateIn(
@@ -44,19 +46,12 @@ class StoreViewModel(private val application: Application) : AndroidViewModel(ap
             billingService.queryProductDetails()
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             with(billingService) {
-                for (purchase in purchases) {
-                    val value = purchase.orNull() ?: continue
-
-                    if (value.purchased) {
-                        processPurchase(value).orNull()?.let {
-                            if (ad_free in it.products) {
-                                Preferences.AdFreePurchased.put(
-                                    context = application,
-                                    value = true,
-                                )
-                            }
+                purchasesResult.collect { purchaseResult ->
+                    purchaseResult.onSuccess {
+                        if (ad_free in it.purchase.products) {
+                            Preferences.AdFreePurchased.put(application, true)
                         }
                     }
                 }
