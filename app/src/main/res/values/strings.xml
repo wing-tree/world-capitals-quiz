@@ -1,7 +1,10 @@
 <resources>
     <string name="africa">Africa</string>
     <string name="america">America</string>
+    <string name="app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="app_name">World Capitals Quiz</string>
+    <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="sample_interstitial_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
     <string name="asia">Asia</string>
     <string name="capital">Capital</string>
     <string name="country">Country</string>
